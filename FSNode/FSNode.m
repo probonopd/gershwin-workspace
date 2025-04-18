@@ -469,6 +469,9 @@
 /** essentially lastPathComponent which might be translated */
 - (NSString *)name
 {
+  if ([[self path] isEqualToString: @"/"]) {
+    return @"System"; // Show this label on desktop
+  }
   return name;
 }
 
