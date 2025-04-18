@@ -1,5 +1,5 @@
  {
-    ApplicationName = "GWorkspace";
+    ApplicationName = "Workspace";
     ApplicationDescription = "GNUstep Workspace Manager";
     ApplicationIcon = "FileManager.tiff";
     ApplicationRelease = "1.1.0";
