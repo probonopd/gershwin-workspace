@@ -27,11 +27,11 @@
 #import <Foundation/Foundation.h>
 #import "FSNodeRep.h"
 
-typedef enum DockPosition {   
-  DockPositionLeft = 0,
-  DockPositionRight = 1
+typedef enum {
+  DockPositionLeft,
+  DockPositionRight,
+  DockPositionBottom   // ← Add this line
 } DockPosition;
-
 
 @class GWorkspace;
 @class GWDesktopView;

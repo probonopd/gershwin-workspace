@@ -502,34 +502,77 @@
       break;
     }
   }
+ 
+  if (position == DockPositionBottom)
+  {
+    rect.size.width = [icons count] * icnrect.size.width;
+    rect.size.height = icnrect.size.height;
+  }
+  else
+  {
+    rect.size.width = icnrect.size.width;
+    rect.size.height = [icons count] * icnrect.size.height;
+  }
 
-  rect.size.width = icnrect.size.width;
-  rect.origin.x = (position == DockPositionLeft) ? 0 : scrrect.size.width - rect.size.width;
-  rect.origin.y = ceil((scrrect.size.height - rect.size.height) / 2);
-  
+  if (position == DockPositionBottom)
+    {
+      rect.origin.x = ceil((scrrect.size.width - rect.size.width) / 2);
+      rect.origin.y = 0;
+    }
+  else if (position == DockPositionLeft)
+    {
+      rect.origin.x = 0;
+      rect.origin.y = ceil((scrrect.size.height - rect.size.height) / 2);
+    }
+  else // DockPositionRight
+    {
+      rect.origin.x = scrrect.size.width - rect.size.width;
+      rect.origin.y = ceil((scrrect.size.height - rect.size.height) / 2);
+    }
+
   if (view) {
     [view setNeedsDisplayInRect: [self frame]];
   }
   [self setFrame: rect];
-  
-  icnrect.origin.y = rect.size.height;
-  
-  for (i = 0; i < [icons count]; i++) {
-    DockIcon *icon = [icons objectAtIndex: i];
-  
-    if (oldIcnSize != iconSize) {
-      [icon setIconSize: iconSize];
+
+  if (position == DockPositionBottom)
+  {
+    icnrect.origin.x = 0;
+    icnrect.origin.y = 0;  // ← RESET Y!
+
+    for (i = 0; i < [icons count]; i++)
+    {
+      DockIcon *icon = [icons objectAtIndex: i];
+
+      if (oldIcnSize != iconSize)
+       [icon setIconSize: iconSize];
+
+      [icon setFrame: icnrect];
+      icnrect.origin.x += icnrect.size.width;
+
+      if ((targetIndex != -1) && (targetIndex == i))
+        icnrect.origin.x += icnrect.size.width;
     }
-    
-    icnrect.origin.y -= icnrect.size.height;
-    [icon setFrame: icnrect];
-    
-    if ((targetIndex != -1) && (targetIndex == i)) {
+  }
+  else
+   {
+    icnrect.origin.y = rect.size.height;  // ← ONLY for vertical layout
+
+    for (i = 0; i < [icons count]; i++)
+    {
+      DockIcon *icon = [icons objectAtIndex: i];
+
+      if (oldIcnSize != iconSize)
+        [icon setIconSize: iconSize];
+
       icnrect.origin.y -= icnrect.size.height;
-      targetRect = icnrect;
+      [icon setFrame: icnrect];
+
+      if ((targetIndex != -1) && (targetIndex == i))
+        icnrect.origin.y -= icnrect.size.height;
     }
-  } 
-  
+  }
+
   [self setNeedsDisplay: YES];
   if (view) {
     [view setNeedsDisplayInRect: [self frame]];
