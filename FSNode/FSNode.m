@@ -470,7 +470,7 @@
 - (NSString *)name
 {
   if ([[self path] isEqualToString: @"/"]) {
-    return @"System"; // Show this label on desktop
+    return @"System Volume"; // Show this label on desktop
   }
   return name;
 }
