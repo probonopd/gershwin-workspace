@@ -470,7 +470,7 @@
 - (NSString *)name
 {
   if ([[self path] isEqualToString: @"/"]) {
-    return @"System Volume"; // Show this label on desktop
+    return @"System Disk"; // Show this label on desktop
   }
   return name;
 }
