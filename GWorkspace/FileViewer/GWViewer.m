@@ -220,9 +220,9 @@
       [vwrwin setTitle: NSLocalizedString(@"File Viewer", @"")];
     } else {
       if (rootViewer) {   
-        [vwrwin setTitle: [NSString stringWithFormat: @"%@ - %@", [node name], [node parentPath]]];   
+        [vwrwin setTitle: NSLocalizedString(@"File Viewer", @"")];   
       } else {
-        [vwrwin setTitle: [NSString stringWithFormat: @"%@", [node name]]];   
+        [vwrwin setTitle: NSLocalizedString(@"File Viewer", @"")];   
       }
     }
 
