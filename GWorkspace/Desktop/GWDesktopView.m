@@ -165,6 +165,7 @@
   added = NO;
 
   rvPaths = [[NSWorkspace sharedWorkspace] mountedRemovableMedia];
+  rvPaths = [rvPaths arrayByAddingObject: @"/"];
   newVolumes = [NSMutableArray arrayWithCapacity:1];
 
   for (i = 0; i < [mountedVolumes count]; i++)
@@ -188,11 +189,12 @@
       if ([mountedVolumes indexOfObject:v] == NSNotFound)
 	{
 	  [newVolumes addObject:v];
-	  if ([v isEqual: path_separator()] == NO)
-	    {
-	      NSLog(@"new volume: %@", v);
-	      [self newVolumeMountedAtPath:v];
-	    }
+	  //if ([v isEqual: path_separator()] == NO)
+	    //{
+	      //NSLog(@"new volume: %@", v);
+	      //[self newVolumeMountedAtPath:v];
+	    //}
+    [self newVolumeMountedAtPath:v];
 	  added = YES;
 	}
     }
