@@ -486,14 +486,23 @@ x += 6; \
         [icon compositeToPoint: icnPoint operation: NSCompositeSourceOver];
       }
     }
-    
-    if ((isWsIcon == NO) && (isTrashIcon == NO)) { 
-      if (apphidden) {
-        DRAWDOT (darkerColor, [NSColor whiteColor], NSMakePoint(4, 2));
-      } else if (launched == NO) {
-        DRAWDOTS (darkerColor, [NSColor whiteColor], NSMakePoint(4, 2));
-      }
+
+  if (isWsIcon == YES) 
+  {
+      NSPoint p;
+      p.x = (rect.size.width / 2) - 1;
+      p.y = 2;
+      DRAWDOT([NSColor blackColor], [NSColor whiteColor], p);
+  }
+
+    if (launched)
+    {
+      NSPoint p;
+      p.x = (rect.size.width / 2) - 1;
+      p.y = 2;
+      DRAWDOT([NSColor blackColor], [NSColor whiteColor], p);
     }
+    
   }
 }
 
