@@ -782,6 +782,17 @@ static BOOL sizeStop = NO;
   [defaults setBool: autocalculate forKey: @"auto_calculate_sizes"];
 }
 
+- (void)awakeFromNib
+{
+    [sizeLabel setTextColor: [NSColor textColor]];
+    [ownerLabel setTextColor: [NSColor textColor]];
+    [groupLabel setTextColor: [NSColor textColor]];
+
+    [sizeField setTextColor: [NSColor textColor]];
+    [ownerField setTextColor: [NSColor textColor]];
+    [groupField setTextColor: [NSColor textColor]];
+}
+
 @end
 
 
