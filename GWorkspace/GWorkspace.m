@@ -274,10 +274,6 @@ static GWorkspace *gworkspace = nil;
 
   [menu addItemWithTitle:_(@"Finder") action:@selector(showFinder:) keyEquivalent:@"f"];
 
-  menuItem = [menu addItemWithTitle:_(@"Fiend") action:NULL keyEquivalent:@""];
-  subMenu = AUTORELEASE ([NSMenu new]);
-  [menu setSubmenu: subMenu forItem: menuItem];
-
   menuItem = [menu addItemWithTitle:_(@"Tabbed Shelf") action:NULL keyEquivalent:@""];
   subMenu = AUTORELEASE ([NSMenu new]);
   [menu setSubmenu: subMenu forItem: menuItem];    
