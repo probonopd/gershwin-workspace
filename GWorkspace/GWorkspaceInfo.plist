@@ -19,11 +19,11 @@
     NSServices = (
       {
         NSMenuItem = {
-          English = "Open in GWorkspace";
-          German = "In GWorkspace \U00F6ffnen";
-	  French = "Ouvrir dans GWorkspace";
-	  Italian = "Aprire in GWorkspace";
-          default = "Open in GWorkspace";
+          English = "Open in Workspace";
+          German = "In Workspace \U00F6ffnen";
+	  French = "Ouvrir dans Workspace";
+	  Italian = "Aprire in Workspace";
+          default = "Open in Workspace";
         };
         NSMessage = openInWorkspace;
         NSPortName = GWorkspace;
