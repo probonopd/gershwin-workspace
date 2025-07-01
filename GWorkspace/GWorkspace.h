@@ -372,8 +372,6 @@
 
 - (void)showAnnotationsInspector:(id)sender;
 
-- (void)showDesktop:(id)sender;
-
 - (void)showRecycler:(id)sender;
 
 - (void)showFinder:(id)sender;

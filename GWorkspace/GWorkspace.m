@@ -282,7 +282,6 @@ static GWorkspace *gworkspace = nil;
   [subMenu addItemWithTitle:_(@"Go backward") action:@selector(goBackwardInHistory:) keyEquivalent:@""];
   [subMenu addItemWithTitle:_(@"Go forward") action:@selector(goForwardInHistory:) keyEquivalent:@""];
   
-  [menu addItemWithTitle:_(@"Show Desktop") action:@selector(showDesktop:) keyEquivalent:@""];
   [menu addItemWithTitle:_(@"Show Recycler") action:@selector(showRecycler:) keyEquivalent:@""];
 
   [menu addItemWithTitle:_(@"Check for disks") action:@selector(checkRemovableMedia:) keyEquivalent:@"E"];
@@ -2278,31 +2277,6 @@ static GWorkspace *gworkspace = nil;
 {
   [self showInspector: nil]; 
   [inspector showAnnotations];
-}
-
-- (void)showDesktop:(id)sender
-{
-  NSMenu *menu = [[[NSApp mainMenu] itemWithTitle: NSLocalizedString(@"Tools", @"")] submenu];
-  id item;
-
-  if ([dtopManager isActive] == NO)
-    {
-      [dtopManager activateDesktop];
-      item = [menu itemWithTitle: NSLocalizedString(@"Show Desktop", @"")];
-      [item setTitle: NSLocalizedString(@"Hide Desktop", @"")];
-      if (recyclerApp)
-	{
-	  recyclerCanQuit = YES;
-	  [recyclerApp terminateApplication];
-	  item = [menu itemWithTitle: NSLocalizedString(@"Hide Recycler", @"")];
-	  [item setTitle: NSLocalizedString(@"Show Recycler", @"")];
-	}
-    }
-  else {
-    [dtopManager deactivateDesktop];
-    item = [menu itemWithTitle: NSLocalizedString(@"Hide Desktop", @"")];
-    [item setTitle: NSLocalizedString(@"Show Desktop", @"")];
-  }
 }
 
 - (void)showRecycler:(id)sender
