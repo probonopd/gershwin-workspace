@@ -282,8 +282,6 @@ static GWorkspace *gworkspace = nil;
   [subMenu addItemWithTitle:_(@"Go backward") action:@selector(goBackwardInHistory:) keyEquivalent:@""];
   [subMenu addItemWithTitle:_(@"Go forward") action:@selector(goForwardInHistory:) keyEquivalent:@""];
   
-  [menu addItemWithTitle:_(@"Show Recycler") action:@selector(showRecycler:) keyEquivalent:@""];
-
   [menu addItemWithTitle:_(@"Check for disks") action:@selector(checkRemovableMedia:) keyEquivalent:@"E"];
 	
   // Windows
