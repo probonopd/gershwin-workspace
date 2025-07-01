@@ -34,7 +34,6 @@ SUBPROJECTS = FSNode \
 	      Tools \
 	      Inspector \
 	      Operation \
-	      Recycler \
 	      GWorkspace
 
 ifeq ($(BUILD_GWMETADATA),1)
