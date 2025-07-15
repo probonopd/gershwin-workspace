@@ -577,9 +577,9 @@ NSString *_pendingSystemActionTitle = nil;
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)app 
 {
-  // Only allow termination if a logout or system action is pending
-  if (!_pendingSystemActionCommand && !loggingout) {
-    // Not a logout or system action, do not quit
+  // Only allow termination for logout actions
+  if (!loggingout) {
+    // Not a logout action, do not quit
     return NSTerminateCancel;
   }
 
@@ -678,65 +678,8 @@ NSString *_pendingSystemActionTitle = nil;
         }
   }
   		
-  // Request all other apps to close before quitting
-  NSArray *launched = [[GWorkspace gworkspace] launchedApplications];
-  NSString *selfPath = [[NSBundle mainBundle] bundlePath];
-  NSString *selfName = [[NSProcessInfo processInfo] processName];
-  NSMutableArray *otherApps = [NSMutableArray array];
-  for (NSDictionary *appInfo in launched) {
-    NSString *appPath = appInfo[@"path"];
-    NSString *appName = appInfo[@"name"];
-    if (![appPath isEqual:selfPath] || ![appName isEqual:selfName]) {
-      GWLaunchedApp *appObj = [[GWorkspace gworkspace] launchedAppWithPath:appPath andName:appName];
-      if (appObj) {
-        [appObj terminateApplication];
-        [otherApps addObject:appObj];
-      }
-    }
-  }
-  // Wait for other apps to terminate (polling, up to 5 seconds)
-  BOOL allTerminated = NO;
-  for (int i = 0; i < 50; i++) {
-    BOOL anyRunning = NO;
-    for (GWLaunchedApp *appObj in otherApps) {
-      if ([appObj isRunning]) {
-        anyRunning = YES;
-        break;
-      }
-    }
-    if (!anyRunning) {
-      allTerminated = YES;
-      break;
-    }
-    [NSThread sleepForTimeInterval:0.1];
-  }
-  if (!allTerminated) {
-    NSRunAlertPanel(_(@"Error"), _(@"Some applications did not terminate in time."), _(@"OK"), nil, nil);
-    return NSTerminateCancel;
-  }
-
-  if (_pendingSystemActionCommand) {
-    NSError *error = nil;
-    NSTask *task = [NSTask new];
-    AUTORELEASE(task);
-    [task setLaunchPath:_pendingSystemActionCommand];
-    @try {
-      [task launch];
-    } @catch (NSException *e) {
-      error = [NSError errorWithDomain:@"GWorkspace" code:1 userInfo:@{NSLocalizedDescriptionKey: [e reason]}];
-    }
-    if (error) {
-      NSRunAlertPanel(_(@"Error"), [error localizedDescription], _(@"OK"), nil, nil);
-      _pendingSystemActionCommand = nil;
-      _pendingSystemActionTitle = nil;
-      return NSTerminateCancel;
-    }
-    _pendingSystemActionCommand = nil;
-    _pendingSystemActionTitle = nil;
-    return NSTerminateCancel;
-  } else {
-    return NSTerminateNow; 
-  }
+  // This is a logout - allow termination
+  return NSTerminateNow; 
 }
 
 - (NSString *)defEditor
