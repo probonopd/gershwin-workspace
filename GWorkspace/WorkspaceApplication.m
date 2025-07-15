@@ -897,7 +897,7 @@
 
 - (void)startLogoutRestartShutdownWithType:(NSString *)type message:(NSString *)message systemAction:(NSString *)systemActionTitle pendingCommand:(NSString *)pendingCommand
 {
-  NSString *msg = [NSString stringWithFormat:@"%@\n%@%@ %@%i %@",
+  NSString *msg = [NSString stringWithFormat:@"%@\n%@%@\n%@%i %@",
     message,
     NSLocalizedString(@"If you do nothing, the system will ", @""),
     type,
