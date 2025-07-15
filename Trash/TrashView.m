@@ -1,11 +1,11 @@
-/* RecyclerView.m
+/* TrashView.m
  *  
  * Copyright (C) 2004-2013 Free Software Foundation, Inc.
  *
  * Author: Enrico Sersale <enrico@imago.ro>
  * Date: June 2004
  *
- * This file is part of the GNUstep Recycler application
+ * This file is part of the GNUstep Trash application
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,16 +28,16 @@
 #import <AppKit/AppKit.h>
 #import <GNUstepBase/GNUstep.h>
 
-#import "RecyclerView.h"
-#import "RecyclerIcon.h"
+#import "TrashView.h"
+#import "TrashIcon.h"
 #import "FSNFunctions.h"
 
 #define WIN_SIZE 64
 #define ICN_SIZE 48
 
-@implementation RecyclerWindow
+@implementation TrashWindow
 
-- (void)setRecyclerIcon:(id)icn
+- (void)setTrashIcon:(id)icn
 {
   icon = icn;
   [[self contentView] addSubview: [icon superview]];		
@@ -86,7 +86,7 @@
 @end
 
 
-@implementation RecyclerView
+@implementation TrashView
 
 - (void)dealloc
 {
@@ -103,11 +103,11 @@
     NSString *path;
     FSNode *node;    
 
-    recycler = [Recycler recycler];
-    path = [recycler trashPath];
+    trash = [Trash trash];
+    path = [trash trashPath];
     node = [FSNode nodeWithPath: path];
     
-    icon = [[RecyclerIcon alloc] initWithRecyclerNode: node];
+    icon = [[TrashIcon alloc] initWithTrashNode: node];
     [icon setFrame: [self bounds]];
     [self addSubview: icon];
     RELEASE (icon);
@@ -123,19 +123,19 @@
   self = [self init];
 
   if (self) {
-	  win = [[RecyclerWindow alloc] initWithContentRect: NSMakeRect(0, 0, WIN_SIZE, WIN_SIZE)
+	  win = [[TrashWindow alloc] initWithContentRect: NSMakeRect(0, 0, WIN_SIZE, WIN_SIZE)
 					                      styleMask: NSBorderlessWindowMask  
                                   backing: NSBackingStoreBuffered 
                                     defer: NO];
 
-    if ([win setFrameUsingName: @"recycler_win"] == NO) {
+    if ([win setFrameUsingName: @"trash_win"] == NO) {
 			NSRect r = [[NSScreen mainScreen] frame];
       [win setFrame: NSMakeRect(r.size.width - WIN_SIZE, 0, WIN_SIZE, WIN_SIZE) 
             display: NO];
     }      
 
     [win setReleasedWhenClosed: NO]; 
-    [win setRecyclerIcon: icon];
+    [win setTrashIcon: icon];
     [win registerForDraggedTypes: [NSArray arrayWithObject: NSFilenamesPboardType]];    
   }
   
@@ -149,7 +149,7 @@
   [win makeMainWindow];
 }
 
-- (RecyclerIcon *)trashIcon
+- (TrashIcon *)trashIcon
 {
   return icon;
 }
@@ -157,7 +157,7 @@
 - (void)updateDefaults
 {
 	if (win && [win isVisible]) {
-  	[win saveFrameUsingName: @"recycler_win"];
+  	[win saveFrameUsingName: @"trash_win"];
 	}
 }
 
@@ -169,7 +169,7 @@
 @end
 
 
-@implementation RecyclerView (NodeRepContainer)
+@implementation TrashView (NodeRepContainer)
 
 - (void)nodeContentsDidChange:(NSDictionary *)info
 {
@@ -199,14 +199,14 @@
   }
 
   if ([operation isEqual: @"GWorkspaceRecycleOutOperation"]
-			    || [operation isEqual: @"GWorkspaceEmptyRecyclerOperation"]
+			    || [operation isEqual: @"GWorkspaceEmptyTrashOperation"]
           || [operation isEqual: NSWorkspaceMoveOperation]
           || [operation isEqual: NSWorkspaceDestroyOperation]) { 
     FSNode *node = [icon node];
     NSString *trashPath = [node path];
     NSString *basePath;
     
-    if ([operation isEqual: @"GWorkspaceEmptyRecyclerOperation"]
+    if ([operation isEqual: @"GWorkspaceEmptyTrashOperation"]
                 || [operation isEqual: NSWorkspaceDestroyOperation]) { 
       basePath = destination;  
     } else {
@@ -236,7 +236,7 @@
   NSString *path = [info objectForKey: @"path"];
     
   if ([event isEqual: @"GWFileDeletedInWatchedDirectory"]) {
-    if ([path isEqual: [recycler trashPath]]) {
+    if ([path isEqual: [trash trashPath]]) {
       FSNode *node = [icon node];
       NSArray *subNodes = [node subNodes];
       int count = [subNodes count];
@@ -254,7 +254,7 @@
     }
     
   } else if ([event isEqual: @"GWFileCreatedInWatchedDirectory"]) {
-    if ([path isEqual: [recycler trashPath]]) {
+    if ([path isEqual: [trash trashPath]]) {
       FSNode *node = [icon node];
       NSArray *subNodes = [node subNodes];
       int i;

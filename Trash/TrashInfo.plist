@@ -1,13 +1,13 @@
 {
-    NSIcon = "Recycler.tiff";
+    NSIcon = "Trash.tiff";
     NSRole = "NSNone";
-    ApplicationDescription = "Recycler";
+    ApplicationDescription = "Trash";
     ApplicationDescription = "Workspace Manager";
-    ApplicationIcon = "Recycler.tiff";
-    ApplicationName = "Recycler";
+    ApplicationIcon = "Trash.tiff";
+    ApplicationName = "Trash";
     ApplicationRelease = "1.1.0";
     NSBuildVersion = "02 2025";
-    CFBundleIdentifier = "org.gnustep.GWorkspace.Recycler";
+    CFBundleIdentifier = "org.gnustep.GWorkspace.Trash";
     Authors = (
       "Riccardo Mottola",
       "Enrico Sersale"

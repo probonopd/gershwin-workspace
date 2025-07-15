@@ -20,8 +20,8 @@
 	"New File" = "Nouveau fichier";
 	"Duplicate" = "Dupliquer";	
 	"Destroy" = "Supprimer";
-	"Move to Recycler" = "Envoyer à la corbeille";
-	"Empty Recycler" = "Vider la corbeille";
+	"Move to Trash" = "Envoyer à la corbeille";
+	"Empty Trash" = "Vider la corbeille";
 
 "Edit" = "Édition";
 	"Cut" = "Couper";
@@ -76,8 +76,8 @@
 		"Go forward" = "Avancer";	
 	"Show Desktop" = "Montrer le bureau";
         "Hide Desktop" = "Masquer le bureau";
-	"Show Recycler" = "Montrer la corbeille";
-        "Hide Recycler" = "Masquer la corbeille";
+	"Show Trash" = "Montrer la corbeille";
+        "Hide Trash" = "Masquer la corbeille";
 	"Check for disks" = "Vérifier les lecteurs";
 	
 "Windows" = "Fenêtre";
@@ -448,14 +448,14 @@
 "Type the command to execute:"="Entrer la commande à exécuter :";
 
 
-/* Recycler strings */
+/* Trash strings */
 "Recycle: " = "Envoyer dans la Corbeille: ";
-"Recycler: " = "Corbeille: ";
-"Recycler" = "Corbeille";
-"the Recycler" = "la Corbeille";
-"\nto the Recycler" = "\nvers la Corbeille";
-"Move from the Recycler " = "Déplacer depuis la Corbeille ";
+"Trash: " = "Corbeille: ";
+"Trash" = "Corbeille";
+"the Trash" = "la Corbeille";
+"\nto the Trash" = "\nvers la Corbeille";
+"Move from the Trash " = "Déplacer depuis la Corbeille ";
 "In" = "Dedans";
-"Empty Recycler" = "Vider la Corbeille";
-"Empty the Recycler?" = "Vider la Corbeille ?";
+"Empty Trash" = "Vider la Corbeille";
+"Empty the Trash?" = "Vider la Corbeille ?";
 "Put Away" = "Jeter";

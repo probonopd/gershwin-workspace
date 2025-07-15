@@ -14,7 +14,7 @@
 	"New File" = "New File";
 	"Duplicate" = "Duplicate";	
 	"Destroy" = "Destroy";
-	"Empty Recycler" = "Empty Recycler";
+	"Empty Trash" = "Empty Trash";
 
 "Edit" = "Edit";
 	"Cut" = "Cut";
@@ -307,14 +307,14 @@
 "Title Width" = "Title Width";
 "Icon View" = "Icon View";
 
-/* Recycler strings */
+/* Trash strings */
 "Recycle: " = "Recycle: ";
-"Recycler: " = "Recycler: ";
-"Recycler" = "Recycler";
-"the Recycler" = "the Recycler";
-"\nto the Recycler" = "\nto the Recycler";
-"Move from the Recycler " = "Move from the Recycler ";
+"Trash: " = "Trash: ";
+"Trash" = "Trash";
+"the Trash" = "the Trash";
+"\nto the Trash" = "\nto the Trash";
+"Move from the Trash " = "Move from the Trash ";
 "In" = "In";
-"Empty Recycler" = "Empty Recycler";
-"Empty the Recycler?" = "Empty the Recycler?";
+"Empty Trash" = "Empty Trash";
+"Empty the Trash?" = "Empty the Trash?";
 "Put Away" = "Put Away";

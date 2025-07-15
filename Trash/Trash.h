@@ -1,11 +1,11 @@
-/* Recycler.h
+/* Trash.h
  *  
  * Copyright (C) 2004-2013 Free Software Foundation, Inc.
  *
  * Author: Enrico Sersale <enrico@imago.ro>
  * Date: June 2004
  *
- * This file is part of the GNUstep Recycler application
+ * This file is part of the GNUstep Trash application
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +26,8 @@
 
 @class FSNodeRep;
 @class FSNode;
-@class RecyclerView;
-@class RecyclerPrefs;
+@class TrashView;
+@class TrashPrefs;
 @class StartAppWin;
 
 @protocol workspaceAppProtocol
@@ -76,13 +76,13 @@
 @end
 
 
-@interface Recycler : NSObject <FSWClientProtocol>
+@interface Trash : NSObject <FSWClientProtocol>
 {
   FSNodeRep *fsnodeRep;
   NSString *trashPath;
-  RecyclerView *recview;
+  TrashView *recview;
   BOOL docked;
-  RecyclerPrefs *preferences;
+  TrashPrefs *preferences;
   StartAppWin *startAppWin;
   
   id fswatcher;
@@ -97,7 +97,7 @@
   NSNotificationCenter *nc; 
 }
 
-+ (Recycler *)recycler;
++ (Trash *)trash;
 
 - (oneway void)emptyTrash;
 

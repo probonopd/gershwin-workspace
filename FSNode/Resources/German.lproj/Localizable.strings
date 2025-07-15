@@ -75,8 +75,8 @@ add comments above this one
 
 /* File: ../FSNFunctions.m:154 */
 /* Flag: untranslated */
-"You can't rename an object that is in the Recycler"
-  = "You can't rename an object that is in the Recycler";
+"You can't rename an object that is in the Trash"
+  = "You can't rename an object that is in the Trash";
 
 /* File: ../FSNFunctions.m:163 */
 /* Flag: untranslated */

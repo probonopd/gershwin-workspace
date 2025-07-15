@@ -789,7 +789,7 @@
     }
   if ([ednode isSubnodeOfPath: [[GWorkspace gworkspace] trashPath]])
     {
-      showAlertInRecycler([FSNode class]);
+      showAlertInTrash([FSNode class]);
       [self updateNameEditor];
       return;
     } 

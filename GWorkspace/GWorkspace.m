@@ -125,7 +125,7 @@ static GWorkspace *gworkspace = nil;
     [logoutTimer invalidate];
     DESTROY (logoutTimer);
   }
-  DESTROY (recyclerApp);
+  DESTROY (trashApp);
   DESTROY (ddbd);
   DESTROY (mdextractor);
   RELEASE (gwProcessName);
@@ -182,8 +182,8 @@ static GWorkspace *gworkspace = nil;
   [menu addItemWithTitle:_(@"New File")  action:@selector(newFile:) keyEquivalent:@""];
   [menu addItemWithTitle:_(@"Duplicate")  action:@selector(duplicateFiles:) keyEquivalent:@"d"];
   [menu addItemWithTitle:_(@"Destroy")  action:@selector(deleteFiles:) keyEquivalent:@""];  
-  [menu addItemWithTitle:_(@"Move to Recycler")  action:@selector(recycleFiles:) keyEquivalent:@"r"];
-  [menu addItemWithTitle:_(@"Empty Recycler") action:@selector(emptyRecycler:) keyEquivalent:@""];
+  [menu addItemWithTitle:_(@"Move to Trash")  action:@selector(recycleFiles:) keyEquivalent:@"r"];
+  [menu addItemWithTitle:_(@"Empty Trash") action:@selector(emptyTrash:) keyEquivalent:@""];
   
   // Edit
   menuItem = [mainMenu addItemWithTitle:_(@"Edit") action:NULL keyEquivalent:@""];
@@ -429,7 +429,7 @@ static GWorkspace *gworkspace = nil;
   fswnotifications = YES;
   [self connectFSWatcher];
     
-  recyclerApp = nil;
+  trashApp = nil;
 
   dtopManager = [GWDesktopManager desktopManager];
     
@@ -442,9 +442,9 @@ static GWorkspace *gworkspace = nil;
     item = [menu itemWithTitle: NSLocalizedString(@"Show Desktop", @"")];
     [item setTitle: NSLocalizedString(@"Hide Desktop", @"")];
 
-  } else if ([defaults boolForKey: @"uses_recycler"])
+  } else if ([defaults boolForKey: @"uses_trash"])
   { 
-    [self connectRecycler];
+    [self connectTrash];
   }  
 
   tshelfPBFileNum = 0;
@@ -638,19 +638,19 @@ static GWorkspace *gworkspace = nil;
 
   [finder stopAllSearchs];
   
-  if (recyclerApp)
+  if (trashApp)
     {
       NSConnection *conn;
 
-      conn = [(NSDistantObject *)recyclerApp connectionForProxy];
+      conn = [(NSDistantObject *)trashApp connectionForProxy];
   
       if (conn && [conn isValid])
         {
           [nc removeObserver: self
                         name: NSConnectionDidDieNotification
                       object: conn];
-          [recyclerApp terminateApplication];
-          DESTROY (recyclerApp);
+          [trashApp terminateApplication];
+          DESTROY (trashApp);
         }
     }
   
@@ -901,7 +901,7 @@ static GWorkspace *gworkspace = nil;
 
   [defaults setBool: [[inspector win] isVisible] forKey: @"uses_inspector"];
 
-  [defaults setBool: (recyclerApp != nil) forKey: @"uses_recycler"];
+  [defaults setBool: (trashApp != nil) forKey: @"uses_trash"];
 
 	[defaults synchronize];
 }
@@ -1066,10 +1066,10 @@ static GWorkspace *gworkspace = nil;
 {	
   SEL action = [anItem action];
 
-  if (sel_isEqual(action, @selector(showRecycler:))) {
+  if (sel_isEqual(action, @selector(showTrash:))) {
     return (([dtopManager isActive] == NO) || ([dtopManager dockActive] == NO));
   
-  } else if (sel_isEqual(action, @selector(emptyRecycler:))) {
+  } else if (sel_isEqual(action, @selector(emptyTrash:))) {
     return ([trashContents count] != 0);
   } else if (sel_isEqual(action, @selector(removeTShelfTab:))
               || sel_isEqual(action, @selector(renameTShelfTab:))
@@ -1854,32 +1854,32 @@ static GWorkspace *gworkspace = nil;
 {
 }
 
-- (void)connectRecycler
+- (void)connectTrash
 {
-  if (recyclerApp == nil)
+  if (trashApp == nil)
     {
-      recyclerApp = [NSConnection rootProxyForConnectionWithRegisteredName: @"Recycler" 
+      trashApp = [NSConnection rootProxyForConnectionWithRegisteredName: @"Trash" 
                                                                       host: @""];
       
-      if (recyclerApp == nil)
+      if (trashApp == nil)
         {
           unsigned i;
           
           [startAppWin showWindowWithTitle: @"GWorkspace"
-                                   appName: @"Recycler"
+                                   appName: @"Trash"
                                  operation: NSLocalizedString(@"starting:", @"")
                               maxProgValue: 80.0];
           
-          [ws launchApplication: @"Recycler"];
+          [ws launchApplication: @"Trash"];
           
           for (i = 1; i <= 80; i++)
             {
               [startAppWin updateProgressBy: 1.0];
               [[NSRunLoop currentRunLoop] runUntilDate:
                                             [NSDate dateWithTimeIntervalSinceNow: 0.1]];
-              recyclerApp = [NSConnection rootProxyForConnectionWithRegisteredName: @"Recycler" 
+              trashApp = [NSConnection rootProxyForConnectionWithRegisteredName: @"Trash" 
                                                                               host: @""];                  
-              if (recyclerApp)
+              if (trashApp)
                 {
                   [startAppWin updateProgressBy: 80.0 - (double)i];
                   break;
@@ -1889,27 +1889,27 @@ static GWorkspace *gworkspace = nil;
           [[startAppWin win] close];
         }
     
-      if (recyclerApp)
+      if (trashApp)
         {
           NSMenu *menu = [[[NSApp mainMenu] itemWithTitle: NSLocalizedString(@"Tools", @"")] submenu];
-          id item = [menu itemWithTitle: NSLocalizedString(@"Show Recycler", @"")];
+          id item = [menu itemWithTitle: NSLocalizedString(@"Show Trash", @"")];
 
           if (item != nil) {
-            [item setTitle: NSLocalizedString(@"Hide Recycler", @"")];
+            [item setTitle: NSLocalizedString(@"Hide Trash", @"")];
           }
     
-          RETAIN (recyclerApp);
-          [recyclerApp setProtocolForProxy: @protocol(RecyclerAppProtocol)];
+          RETAIN (trashApp);
+          [trashApp setProtocolForProxy: @protocol(TrashAppProtocol)];
     
           [[NSNotificationCenter defaultCenter] addObserver: self
-                                                   selector: @selector(recyclerConnectionDidDie:)
+                                                   selector: @selector(trashConnectionDidDie:)
                                                        name: NSConnectionDidDieNotification
-                                                     object: [recyclerApp connectionForProxy]];
+                                                     object: [trashApp connectionForProxy]];
         } 
       else
         {
           NSRunAlertPanel(nil,
-                          NSLocalizedString(@"unable to contact Recycler!", @""),
+                          NSLocalizedString(@"unable to contact Trash!", @""),
                           NSLocalizedString(@"Ok", @""),
                           nil, 
                           nil);  
@@ -1917,32 +1917,32 @@ static GWorkspace *gworkspace = nil;
     }
 }
 
-- (void)recyclerConnectionDidDie:(NSNotification *)notif
+- (void)trashConnectionDidDie:(NSNotification *)notif
 {
   id connection = [notif object];
   NSMenu *menu = [[[NSApp mainMenu] itemWithTitle: NSLocalizedString(@"Tools", @"")] submenu];
-  id item = [menu itemWithTitle: NSLocalizedString(@"Hide Recycler", @"")];
+  id item = [menu itemWithTitle: NSLocalizedString(@"Hide Trash", @"")];
 
   [[NSNotificationCenter defaultCenter] removeObserver: self
 	                    name: NSConnectionDidDieNotification
 	                  object: connection];
 
-  NSAssert(connection == [recyclerApp connectionForProxy],
+  NSAssert(connection == [trashApp connectionForProxy],
 		                                  NSInternalInconsistencyException);
-  RELEASE (recyclerApp);
-  recyclerApp = nil;
+  RELEASE (trashApp);
+  trashApp = nil;
 
   if (item != nil) {
-    [item setTitle: NSLocalizedString(@"Show Recycler", @"")];
+    [item setTitle: NSLocalizedString(@"Show Trash", @"")];
   }
     
-  if (recyclerCanQuit == NO) {  
+  if (trashCanQuit == NO) {  
     if (NSRunAlertPanel(nil,
-                      NSLocalizedString(@"The Recycler connection died.\nDo you want to restart it?", @""),
+                      NSLocalizedString(@"The Trash connection died.\nDo you want to restart it?", @""),
                       NSLocalizedString(@"Yes", @""),
                       NSLocalizedString(@"No", @""),
                       nil)) {
-      [self connectRecycler]; 
+      [self connectTrash]; 
     }    
   }
 }
@@ -2274,24 +2274,24 @@ static GWorkspace *gworkspace = nil;
   [inspector showAnnotations];
 }
 
-- (void)showRecycler:(id)sender
+- (void)showTrash:(id)sender
 {
   NSMenu *menu = [[[NSApp mainMenu] itemWithTitle: NSLocalizedString(@"Tools", @"")] submenu];
   id item;
 
-  if (recyclerApp == nil)
+  if (trashApp == nil)
     {
-      recyclerCanQuit = NO; 
-      [self connectRecycler];
-      item = [menu itemWithTitle: NSLocalizedString(@"Show Recycler", @"")];
-      [item setTitle: NSLocalizedString(@"Hide Recycler", @"")];
+      trashCanQuit = NO; 
+      [self connectTrash];
+      item = [menu itemWithTitle: NSLocalizedString(@"Show Trash", @"")];
+      [item setTitle: NSLocalizedString(@"Hide Trash", @"")];
     }
   else
     {
-      recyclerCanQuit = YES;
-      [recyclerApp terminateApplication];
-      item = [menu itemWithTitle: NSLocalizedString(@"Hide Recycler", @"")];
-      [item setTitle: NSLocalizedString(@"Show Recycler", @"")];
+      trashCanQuit = YES;
+      [trashApp terminateApplication];
+      item = [menu itemWithTitle: NSLocalizedString(@"Hide Trash", @"")];
+      [item setTitle: NSLocalizedString(@"Show Trash", @"")];
     }
 }
 
@@ -2582,7 +2582,7 @@ static GWorkspace *gworkspace = nil;
   [dtopManager checkNewRemovableMedia];	
 }
 
-- (void)emptyRecycler:(id)sender
+- (void)emptyTrash:(id)sender
 {
   CREATE_AUTORELEASE_POOL(arp);
   FSNode *node = [FSNode nodeWithPath: trashPath];
@@ -2612,7 +2612,7 @@ static GWorkspace *gworkspace = nil;
 	  [files addObject: [[(FSNode *)[subNodes objectAtIndex: i] path] lastPathComponent]];
 	}
 
-      [opinfo setObject: @"GWorkspaceEmptyRecyclerOperation" forKey: @"operation"];
+      [opinfo setObject: @"GWorkspaceEmptyTrashOperation" forKey: @"operation"];
       [opinfo setObject: trashPath forKey: @"source"];
       [opinfo setObject: trashPath forKey: @"destination"];
       [opinfo setObject: files forKey: @"files"];

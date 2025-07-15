@@ -16,8 +16,8 @@
 	"New File" = "Nowy plik";
 	"Duplicate" = "Duplikuj";
 	"Destroy" = "Zniszcz";
-	"Move to Recycler" = "Przenieś do kosza";
-	"Empty Recycler" = "Opróżnij kosz";
+	"Move to Trash" = "Przenieś do kosza";
+	"Empty Trash" = "Opróżnij kosz";
 
 "Edit" = "Edycja";
 	"Cut" = "Wytnij";
@@ -72,8 +72,8 @@
 		"Go forward" = "Przejdź dalej";
 	"Show Desktop" = "Pokaż pulpit";
         "Hide Desktop" = "Ukryj pulpit";
-	"Show Recycler" = "Pokaż kosz";
-        "Hide Recycler" = "Ukryj kosz";
+	"Show Trash" = "Pokaż kosz";
+        "Hide Trash" = "Ukryj kosz";
 	"Check for disks" = "Sprawdź dyski";
 	
 "Windows" = "Okna";
@@ -422,15 +422,15 @@
 "Type the command to execute:"="Wpisz polecenie do wykonania:";
 
 
-/* Recycler strings */
+/* Trash strings */
 "Recycle: " = "Usuń: ";
-"Recycler: " = "Kosz: ";
-"Recycler" = "Kosz";
-"the Recycler" = "kosz";
-"\nto the Recycler" = "\ndo kosza";
-"Move from the Recycler " = "Przywróć z kosza ";
+"Trash: " = "Kosz: ";
+"Trash" = "Kosz";
+"the Trash" = "kosz";
+"\nto the Trash" = "\ndo kosza";
+"Move from the Trash " = "Przywróć z kosza ";
 "In" = "w";
-"Empty Recycler" = "Opróżnij kosz";
-"Empty the Recycler?" = "Opróżnić kosz?";
+"Empty Trash" = "Opróżnij kosz";
+"Empty the Trash?" = "Opróżnić kosz?";
 "Put Away" = "Odłóż";
 

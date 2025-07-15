@@ -1,11 +1,11 @@
-/* RecyclerIcon.h
+/* TrashIcon.h
  *  
  * Copyright (C) 2004-2010 Free Software Foundation, Inc.
  *
  * Author: Enrico Sersale <enrico@imago.ro>
  * Date: June 2004
  *
- * This file is part of the GNUstep Recycler application
+ * This file is part of the GNUstep Trash application
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,21 +29,21 @@
 @class NSImage;
 @class NSWorkspace;
 
-@interface RecyclerIcon : FSNIcon
+@interface TrashIcon : FSNIcon
 {
   NSImage *trashFullIcon;
   BOOL trashFull;
   NSWorkspace *ws;
 }
 
-- (id)initWithRecyclerNode:(FSNode *)anode;
+- (id)initWithTrashNode:(FSNode *)anode;
  
 - (void)setTrashFull:(BOOL)value;
 
 @end
 
 
-@interface RecyclerIcon (DraggingDestination)
+@interface TrashIcon (DraggingDestination)
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender;
 

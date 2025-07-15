@@ -41,7 +41,7 @@ NSArray *makePathsSelection(NSArray *selnodes);
 double myrintf(double a);
 
 void showAlertNoPermission(Class c, NSString *name);
-void showAlertInRecycler(Class c);
+void showAlertInTrash(Class c);
 void showAlertInvalidName(Class c);
 NSInteger showAlertExtensionChange(Class c, NSString *extension);
 void showAlertNameInUse(Class c, NSString *newname);

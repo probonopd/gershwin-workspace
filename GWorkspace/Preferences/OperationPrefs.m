@@ -110,7 +110,7 @@ static NSString *nibName = @"OperationPrefs";
     [[confMatrix cellAtRow:0 column:0] setTitle: NSLocalizedString(@"Move", @"")];
     [[confMatrix cellAtRow:1 column:0] setTitle: NSLocalizedString(@"Copy", @"")];
     [[confMatrix cellAtRow:2 column:0] setTitle: NSLocalizedString(@"Link", @"")];
-    [[confMatrix cellAtRow:3 column:0] setTitle: NSLocalizedString(@"Recycler", @"")];
+    [[confMatrix cellAtRow:3 column:0] setTitle: NSLocalizedString(@"Trash", @"")];
     [[confMatrix cellAtRow:4 column:0] setTitle: NSLocalizedString(@"Duplicate", @"")];
     [[confMatrix cellAtRow:5 column:0] setTitle: NSLocalizedString(@"Destroy", @"")];
     [labelinfo1 setStringValue: NSLocalizedString(@"Uncheck the buttons to allow automatic confirmation", @"")];
@@ -154,7 +154,7 @@ forKey: confirmString]
   CHECK_CONFIRM (LINKOP, NSWorkspaceLinkOperation);
   CHECK_CONFIRM (RECYCLEOP, NSWorkspaceRecycleOperation);
   CHECK_CONFIRM (RECYCLEOP, @"GWorkspaceRecycleOutOperation");
-  CHECK_CONFIRM (RECYCLEOP, @"GWorkspaceEmptyRecyclerOperation");
+  CHECK_CONFIRM (RECYCLEOP, @"GWorkspaceEmptyTrashOperation");
   CHECK_CONFIRM (DUPLICATEOP, NSWorkspaceDuplicateOperation);
   CHECK_CONFIRM (DESTROYOP, NSWorkspaceDestroyOperation);
 

@@ -101,7 +101,7 @@ add comments above this one
 /* File: ../FSNFunctions.m:191 */
 "The name " = "El nombre ";
 /* File: ../FSNFunctions.m:154 */
-"You can't rename an object that is in the Recycler"
+"You can't rename an object that is in the Trash"
   = "No se puede cambiar el nombre de un objeto que se encuentra en la papelera";
 /* File: ../FSNFunctions.m:145 */
 "You do not have write permission for"

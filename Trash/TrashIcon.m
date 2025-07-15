@@ -1,4 +1,4 @@
-/* RecyclerIcon.m
+/* TrashIcon.m
  *  
  * Copyright (C) 2004-2014 Free Software Foundation, Inc.
  *
@@ -7,7 +7,7 @@
  *
  * Date: June 2004
  *
- * This file is part of the GNUstep Recycler application
+ * This file is part of the GNUstep Trash application
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,15 +29,15 @@
 #import <AppKit/AppKit.h>
 #import <GNUstepBase/GNUstep.h>
 
-#import "Recycler.h"
-#import "RecyclerIcon.h"
+#import "Trash.h"
+#import "TrashIcon.h"
 
 
 #define ISIZE 48
 
 static id <DesktopApplication> desktopApp = nil;
 
-@implementation RecyclerIcon
+@implementation TrashIcon
 
 - (void)dealloc
 {
@@ -59,7 +59,7 @@ static id <DesktopApplication> desktopApp = nil;
   }
 }
 
-- (id)initWithRecyclerNode:(FSNode *)anode
+- (id)initWithTrashNode:(FSNode *)anode
 {
   self = [super initForNode: anode
                nodeInfoType: FSNInfoNameType
@@ -106,7 +106,7 @@ static id <DesktopApplication> desktopApp = nil;
 - (void)mouseDown:(NSEvent *)theEvent
 {
   if ([theEvent clickCount] == 1) {
-    if ([(Recycler *)desktopApp isDocked] == NO) {
+    if ([(Trash *)desktopApp isDocked] == NO) {
       NSWindow *win = [self window];
       NSPoint	lastLocation = [theEvent locationInWindow];
       NSPoint	location;
@@ -172,7 +172,7 @@ static id <DesktopApplication> desktopApp = nil;
 @end
 
 
-@implementation RecyclerIcon (DraggingDestination)
+@implementation TrashIcon (DraggingDestination)
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
 {

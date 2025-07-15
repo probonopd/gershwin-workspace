@@ -14,7 +14,7 @@
 	"New File" = "Ny fil";
 	"Duplicate" = "Fordoble";	
 	"Destroy" = "Ãdelegg"
-	"Empty Recycler" = "TÃ¸m papirkurven";
+	"Empty Trash" = "TÃ¸m papirkurven";
 /*	"Put Away" = "Gjenopprett";
 	"Print..." = "Skriv ut...";
 	"Open With..." = "Ãpne med...";
@@ -387,15 +387,15 @@
 */
 
 
-/* Recycler strings */
+/* Trash strings */
 "Recycle: " = "SÃ¸ppel: ";
-"Recycler: " = "Papirkurv: ";
-"Recycler" = "Papirkurv";
-"the Recycler" = "Papirkurven";
-"\nto the Recycler" = "\ni papirkurven";
-"Move from the Recycler " = "Flytt fra papirkurven ";
+"Trash: " = "Papirkurv: ";
+"Trash" = "Papirkurv";
+"the Trash" = "Papirkurven";
+"\nto the Trash" = "\ni papirkurven";
+"Move from the Trash " = "Flytt fra papirkurven ";
 "In" = "I";
-"Empty Recycler" = "TÃ¸m papirkurven";
-"Empty the Recycler?" = "TÃ¸m papirkurven?";
+"Empty Trash" = "TÃ¸m papirkurven";
+"Empty the Trash?" = "TÃ¸m papirkurven?";
 "Put Away" = "Gjenopprett";
 

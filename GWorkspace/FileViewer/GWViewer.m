@@ -741,7 +741,7 @@
           || [operation isEqual: NSWorkspaceDestroyOperation]
 				  || [operation isEqual: NSWorkspaceRecycleOperation]
 				  || [operation isEqual: @"GWorkspaceRecycleOutOperation"]
-				  || [operation isEqual: @"GWorkspaceEmptyRecyclerOperation"]) {
+				  || [operation isEqual: @"GWorkspaceEmptyTrashOperation"]) {
       [nodeView reloadFromNode: [FSNode nodeWithPath: source]];
     }
     
@@ -1086,7 +1086,7 @@ constrainMinCoordinate:(CGFloat)proposedMin
   
   } else {
     NSRunAlertPanel(nil, 
-                  NSLocalizedString(@"You can't open a document that is in the Recycler!", @""),
+                  NSLocalizedString(@"You can't open a document that is in the Trash!", @""),
 					        NSLocalizedString(@"OK", @""), 
                   nil, 
                   nil);  
@@ -1099,7 +1099,7 @@ constrainMinCoordinate:(CGFloat)proposedMin
     [manager openAsFolderSelectionInViewer: self];
   } else {
     NSRunAlertPanel(nil, 
-                  NSLocalizedString(@"You can't do this in the Recycler!", @""),
+                  NSLocalizedString(@"You can't do this in the Trash!", @""),
 					        NSLocalizedString(@"OK", @""), 
                   nil, 
                   nil);  
@@ -1112,7 +1112,7 @@ constrainMinCoordinate:(CGFloat)proposedMin
     [manager openWithSelectionInViewer: self];
   } else {
     NSRunAlertPanel(nil, 
-                  NSLocalizedString(@"You can't do this in the Recycler!", @""),
+                  NSLocalizedString(@"You can't do this in the Trash!", @""),
 					        NSLocalizedString(@"OK", @""), 
                   nil, 
                   nil);  
@@ -1126,7 +1126,7 @@ constrainMinCoordinate:(CGFloat)proposedMin
                     isDirectory: YES];
   } else {
     NSRunAlertPanel(nil, 
-                  NSLocalizedString(@"You can't create a new folder in the Recycler!", @""),
+                  NSLocalizedString(@"You can't create a new folder in the Trash!", @""),
 					        NSLocalizedString(@"OK", @""), 
                   nil, 
                   nil);  
@@ -1140,7 +1140,7 @@ constrainMinCoordinate:(CGFloat)proposedMin
                     isDirectory: NO];
   } else {
     NSRunAlertPanel(nil, 
-                  NSLocalizedString(@"You can't create a new file in the Recycler!", @""),
+                  NSLocalizedString(@"You can't create a new file in the Trash!", @""),
 					        NSLocalizedString(@"OK", @""), 
                   nil, 
                   nil);  
@@ -1161,7 +1161,7 @@ constrainMinCoordinate:(CGFloat)proposedMin
     }
   } else {
     NSRunAlertPanel(nil, 
-                  NSLocalizedString(@"You can't duplicate files in the Recycler!", @""),
+                  NSLocalizedString(@"You can't duplicate files in the Trash!", @""),
 					        NSLocalizedString(@"OK", @""), 
                   nil, 
                   nil);  
@@ -1185,7 +1185,7 @@ constrainMinCoordinate:(CGFloat)proposedMin
 
 - (void)emptyTrash
 {
-  [gworkspace emptyRecycler: nil];
+  [gworkspace emptyTrash: nil];
 }
 
 - (void)deleteFiles

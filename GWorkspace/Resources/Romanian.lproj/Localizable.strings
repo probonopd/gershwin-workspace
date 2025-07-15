@@ -14,7 +14,7 @@
 	"New File" = "Nou Fiºier";
 	"Duplicate" = "Duplicheazã";	
 	"Destroy" = "Distruge";
-	"Empty Recycler" = "Goleºte Coºul";
+	"Empty Trash" = "Goleºte Coºul";
 
 "Edit" = "Editare";
 	"Cut" = "Taie";
@@ -213,14 +213,14 @@
 "Type the command to execute:"="Type the command to execute:";
 
 
-/* Recycler strings */
+/* Trash strings */
 "Recycle: " = "Coș: ";
-"Recycler: " = "Coș: ";
-"Recycler" = "Coș";
-"the Recycler" = "Coșul";
-"\nto the Recycler" = "\nîn coș";
-"Move from the Recycler " = "Mut din coș ";
+"Trash: " = "Coș: ";
+"Trash" = "Coș";
+"the Trash" = "Coșul";
+"\nto the Trash" = "\nîn coș";
+"Move from the Trash " = "Mut din coș ";
 "In" = "În";
-"Empty Recycler" = "Golește Coșul";
-"Empty the Recycler?" = "Golesc Coșul?";
+"Empty Trash" = "Golește Coșul";
+"Empty the Trash?" = "Golesc Coșul?";
 "Put Away" = "Pune la loc";

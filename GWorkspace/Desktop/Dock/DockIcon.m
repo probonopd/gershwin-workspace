@@ -585,7 +585,7 @@ x += 6; \
              }
         } 
     }
-  else if (isTrashIcon) // FIXME this is largely similar to RecyclerIcon ####
+  else if (isTrashIcon) // FIXME this is largely similar to TrashIcon ####
     {
       NSArray *vpaths = [ws mountedLocalVolumePaths];
       NSMutableArray *files = [NSMutableArray array];

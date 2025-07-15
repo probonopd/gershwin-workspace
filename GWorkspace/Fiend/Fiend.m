@@ -944,7 +944,7 @@
       || [operation isEqual: @"GWorkspaceRenameOperation"]
       || [operation isEqual: NSWorkspaceRecycleOperation]
       || [operation isEqual: @"GWorkspaceRecycleOutOperation"]
-      || [operation isEqual: @"GWorkspaceEmptyRecyclerOperation"])
+      || [operation isEqual: @"GWorkspaceEmptyTrashOperation"])
     {
       NSMutableArray *paths = [NSMutableArray arrayWithCapacity: 1];
       NSArray *names = [layers allKeys];

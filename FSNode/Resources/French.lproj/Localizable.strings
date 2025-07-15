@@ -75,7 +75,7 @@ add comments above this one
 
 /* File: ../FSNFunctions.m:154 */
 /* Flag: untranslated */
-"You can't rename an object that is in the Recycler"
+"You can't rename an object that is in the Trash"
   = "Vous ne pouvez renommer un objet dans la corbeille";
 
 /* File: ../FSNFunctions.m:163 */

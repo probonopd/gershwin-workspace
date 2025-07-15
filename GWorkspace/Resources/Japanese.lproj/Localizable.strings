@@ -16,8 +16,8 @@
 	"New File" = "新規ファイル";
 	"Duplicate" = "複製";
 	"Destroy" = "削除";
-	"Move to Recycler" = "ごみ箱に捨てる";
-	"Empty Recycler" = "こみ箱を空に";
+	"Move to Trash" = "ごみ箱に捨てる";
+	"Empty Trash" = "こみ箱を空に";
 
 "Edit" = "編集";
 	"Cut" = "切り取り";
@@ -72,8 +72,8 @@
 		"Go forward" = "Go forward";
 	"Show Desktop" = "デスクトップの表示";
         "Hide Desktop" = "デスクトップの非表示";
-	"Show Recycler" = "リサイクラの表示";
-        "Hide Recycler" = "リサイクラの非表示";
+	"Show Trash" = "リサイクラの表示";
+        "Hide Trash" = "リサイクラの非表示";
 	"Check for disks" = "Check for disks";
 	
 "Windows" = "ウィンドウ";
@@ -422,15 +422,15 @@
 "Type the command to execute:"="Type the command to execute:";
 
 
-/* Recycler strings */
+/* Trash strings */
 "Recycle: " = "Recycle: ";
-"Recycler: " = "Recycler: ";
-"Recycler" = "Recycler";
-"the Recycler" = "the Recycler";
-"\nto the Recycler" = "\nto the Recycler";
-"Move from the Recycler " = "Move from the Recycler ";
+"Trash: " = "Trash: ";
+"Trash" = "Trash";
+"the Trash" = "the Trash";
+"\nto the Trash" = "\nto the Trash";
+"Move from the Trash " = "Move from the Trash ";
 "In" = "In";
-"Empty Recycler" = "Empty Recycler";
-"Empty the Recycler?" = "Empty the Recycler?";
+"Empty Trash" = "Empty Trash";
+"Empty the Trash?" = "Empty the Trash?";
 "Put Away" = "Put Away";
 

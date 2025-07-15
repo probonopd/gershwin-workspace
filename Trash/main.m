@@ -5,7 +5,7 @@
  * Author: Enrico Sersale <enrico@imago.ro>
  * Date: June 2004
  *
- * This file is part of the GNUstep Recycler application
+ * This file is part of the GNUstep Trash application
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 #import <AppKit/AppKit.h>
 #import <GNUstepBase/GNUstep.h>
 
-#import "Recycler.h"
+#import "Trash.h"
 
 
 void createMenu();
@@ -34,12 +34,12 @@ void createMenu();
 int main(int argc, char **argv, char **env)
 {
   CREATE_AUTORELEASE_POOL (pool);
-  Recycler *recycler = [Recycler recycler];
+  Trash *trash = [Trash trash];
   NSApplication *app = [NSApplication sharedApplication];
 
   createMenu();
 
-  [app setDelegate: recycler];    
+  [app setDelegate: trash];    
   [app run];
   RELEASE (pool);
   
@@ -61,7 +61,7 @@ void createMenu()
   id<NSMenuItem> menuItem;
 
 	// Main
-  mainMenu = AUTORELEASE ([[NSMenu alloc] initWithTitle: @"Recycler"]);
+  mainMenu = AUTORELEASE ([[NSMenu alloc] initWithTitle: @"Trash"]);
     	
 	// Info 	
 	menuItem = addMenuItem(mainMenu, @"Info", @"", nil, @"");
@@ -75,7 +75,7 @@ void createMenu()
 	menuItem = addMenuItem(mainMenu, @"File", @"", nil, @"");
 	file = AUTORELEASE ([NSMenu new]);
 	[mainMenu setSubmenu: file forItem: menuItem];		
-	addMenuItem(file, @"Empty Recycler", @"", @"emptyTrashFromMenu:", @"");
+	addMenuItem(file, @"Empty Trash", @"", @"emptyTrashFromMenu:", @"");
 
 	// Edit
 	menuItem = addMenuItem(mainMenu, @"Edit", @"", nil, @"");

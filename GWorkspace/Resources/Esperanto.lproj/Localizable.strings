@@ -20,8 +20,8 @@
 	"New File" = "Nova dosiero";
 	"Duplicate" = "Duobligu";
 	"Destroy" = "Detruu";
-	"Move to Recycler" = "Ĵetu en rubujon";
-	"Empty Recycler" = "Malplenigu rubujon";
+	"Move to Trash" = "Ĵetu en rubujon";
+	"Empty Trash" = "Malplenigu rubujon";
 
 "Edit" = "Redaktu";
 	"Cut" = "Eltondu";
@@ -80,8 +80,8 @@
                 "Go forward" = "Antaŭen";
 	"Show Desktop" = "Montru tablon";
 	"Hide Desktop" = "Kaŝu tablon";
-	"Show Recycler" = "Montru rubujon";
-	"Hide Recycler" = "Kaŝu rubujon";
+	"Show Trash" = "Montru rubujon";
+	"Hide Trash" = "Kaŝu rubujon";
 	"Check for disks" = "Ekzamenu je disketoj";
 
 /* depre... */
@@ -141,8 +141,8 @@
 "The fswatcher connection died.\nDo you want to restart it?" = "La konekto al fswatcher mortis.\nĈu vi volas relanĉi tiun?";
 "fswatcher notifications disabled!" = "fswatcher-notifikoj malŝaltigis.";
 
-"unable to contact Recycler!" = "Ne povas konatiĝi rubujon.";
-"The Recycler connection died.\nDo you want to restart it?" = "La konekto al rubujon mortis.\nĈu vi volas relanĉi tiun?";
+"unable to contact Trash!" = "Ne povas konatiĝi rubujon.";
+"The Trash connection died.\nDo you want to restart it?" = "La konekto al rubujon mortis.\nĈu vi volas relanĉi tiun?";
 
 "unable to contact Operation!" = "Ne povas konatiĝi Operation.";
 "The Operation connection died. File operations disabled!" = "La konekto al Operation mortis.\nDosiera operacioj malŝaltas.";
@@ -471,15 +471,15 @@
 "Number of saved paths" = "Nombro de konservitaj indikoj";
 
 
-/* Recycler strings */
+/* Trash strings */
 "Recycle: " = "Alrubujiĝu: ";
-"Recycler: " = "Rubujo: ";
-"Recycler" = "Rubujo";
-"the Recycler" = "la rubujo";
-"\nto the Recycler" = "\nrubujon";
-"Move from the Recycler " = "Movigu el rubujo ";
+"Trash: " = "Rubujo: ";
+"Trash" = "Rubujo";
+"the Trash" = "la rubujo";
+"\nto the Trash" = "\nrubujon";
+"Move from the Trash " = "Movigu el rubujo ";
 "In" = "Al";
-"Empty Recycler" = "Malplenigu rubujon";
-"Empty the Recycler?" = "Ĉu malplenigu la rubujon?";
+"Empty Trash" = "Malplenigu rubujon";
+"Empty the Trash?" = "Ĉu malplenigu la rubujon?";
 "Put Away" = "Restaŭrigu";
 

@@ -1,3 +1,6 @@
+2025-07-15  Simon Peter <probono@puredarwin.org>
+        * Rename Recycler to Trash
+
 2024-03-20  Riccardo Mottola <rm@gnu.org>
 	* Inspector/ContentViewers/ImageViewer/Resizer.m:
 	use getPixel/setPixel to handle also 16bpp and non-planar images.
@@ -741,7 +744,7 @@
 2014-09-10 Riccardo Mottola <rm@gnu.org>
 
 	* Operation/FileOpInfo.m
-	Extend thread fix to Trash, move, link, duplicate.
+	Extend thread fix to Recycler, move, link, duplicate.
 
 2014-09-10 Riccardo Mottola <rm@gnu.org>
 
@@ -1442,8 +1445,8 @@
 2013-01-15  Wolfgang Lux  <wolfgang.lux@gmail.com>
 
 	* GWorkspace/GWorkspace.m (-applicationWillFinishLaunching:,
-	(-fileSystemDidChange:, -watchedPathDidChange:, -_updateTrashContents):
-	Initialize trashContents attribute from actual trash contents and
+	(-fileSystemDidChange:, -watchedPathDidChange:, -_updateRecyclerContents):
+	Initialize recyclerContents attribute from actual recycler contents and
 	avoid code duplication.
 
 2012-10-17 Riccardo Mottola <rm@gnu.org>
@@ -1881,7 +1884,7 @@
 	* GWorkspace/GWorkspace.m
 	* GWorkspace/WorkspaceApplication.m
 	If there is no destination for the Recycle operation, get the
-	trash path.
+	recycler path.
 
 2010-10-20 Riccardo Mottola
 

@@ -79,7 +79,7 @@
 @end
 
 
-@protocol	RecyclerAppProtocol
+@protocol	TrashAppProtocol
 
 - (oneway void)emptyTrash:(id)sender;
 
@@ -124,8 +124,8 @@
   BOOL fswnotifications;
   NSCountedSet *watchedPaths;
   
-  id recyclerApp;
-  BOOL recyclerCanQuit;
+  id trashApp;
+  BOOL trashCanQuit;
   
   id ddbd;
   id mdextractor;
@@ -304,9 +304,9 @@
 
 - (void)fswatcherConnectionDidDie:(NSNotification *)notif;
 
-- (void)connectRecycler;
+- (void)connectTrash;
 
-- (void)recyclerConnectionDidDie:(NSNotification *)notif;
+- (void)trashConnectionDidDie:(NSNotification *)notif;
 
 - (void)connectDDBd;
 
@@ -372,7 +372,7 @@
 
 - (void)showAnnotationsInspector:(id)sender;
 
-- (void)showRecycler:(id)sender;
+- (void)showTrash:(id)sender;
 
 - (void)showFinder:(id)sender;
 
@@ -402,7 +402,7 @@
 
 - (void)checkRemovableMedia:(id)sender;
 
-- (void)emptyRecycler:(id)sender;
+- (void)emptyTrash:(id)sender;
 
 
 //

@@ -17,7 +17,7 @@
 	"New File" = "Új fájl";
 	"Duplicate" = "Duplikálás";	
 	"Destroy" = "Törlés";
-	"Empty Recycler" = "Szemetes ürítése";
+	"Empty Trash" = "Szemetes ürítése";
 
 "Edit" = "Szerkesztés";
 	"Cut" = "Kivágás";
@@ -319,17 +319,17 @@
 "Type the command to execute:"="Írja be a végrehajtandó parancsot";
 
 
-/* Recycler strings */
+/* Trash strings */
 
 "Recycle: " = "Áthelyezés a szemetesbe: ";
-"Recycler: " = "Szemetes: ";
-"Recycler" = "Szemetes";
-"the Recycler" = "a szemetes";
-"\nto the Recycler" = "\nva szemetesbe";
-"Move from the Recycler " = "Kivétel a szemetesbõl";
+"Trash: " = "Szemetes: ";
+"Trash" = "Szemetes";
+"the Trash" = "a szemetes";
+"\nto the Trash" = "\nva szemetesbe";
+"Move from the Trash " = "Kivétel a szemetesbõl";
 "In" = "Benne";
-"Empty Recycler" = "Szemetes ürítése";
-"Empty the Recycler?" = "Kiürítsük a szemetest?";
+"Empty Trash" = "Szemetes ürítése";
+"Empty the Trash?" = "Kiürítsük a szemetest?";
 "Put Away" = "kidobás";
 
 

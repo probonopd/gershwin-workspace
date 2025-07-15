@@ -17,8 +17,8 @@
 	"New File" = "Neue Datei";
 	"Duplicate" = "Duplizieren";	
 	"Destroy" = "Vernichten";
-	"Move to Recycler" = "In den Papierkorb";
-	"Empty Recycler" = "Papierkorb leeren";
+	"Move to Trash" = "In den Papierkorb";
+	"Empty Trash" = "Papierkorb leeren";
 	"Put Away" = "Wiederherstellen";
 	"Print..." = "Drucken...";
 	"Open With..." = "Öffnen mit...";
@@ -77,8 +77,8 @@
 	"Terminal" = "Terminal";
 	"Show Desktop" = "Arbeitsfläche anzeigen";
 	"Hide Desktop" = "Arbeitsfläche ausblenden";
-	"Show Recycler" = "Papierkorb anzeigen";
-	"Hide Recycler" = "Papierkorb ausblenden";
+	"Show Trash" = "Papierkorb anzeigen";
+	"Hide Trash" = "Papierkorb ausblenden";
 	"Check for disks" = "Nach Medien prüfen";
 	
 "Windows" = "Fenster";

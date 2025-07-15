@@ -1,11 +1,11 @@
-/* RecyclerPrefs.m
+/* TrashPrefs.m
  *  
  * Copyright (C) 2004-2010 Free Software Foundation, Inc.
  *
  * Author: Enrico Sersale <enrico@imago.ro>
  * Date: June 2004
  *
- * This file is part of the GNUstep Recycler application
+ * This file is part of the GNUstep Trash application
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,14 +28,14 @@
 #import <AppKit/AppKit.h>
 #import <GNUstepBase/GNUstep.h>
 
-#import "RecyclerPrefs.h"
-#import "Recycler.h"
+#import "TrashPrefs.h"
+#import "Trash.h"
 
 
 
 static NSString *nibName = @"PreferencesWin";
 
-@implementation RecyclerPrefs
+@implementation TrashPrefs
 
 - (void)dealloc
 {
@@ -55,15 +55,15 @@ static NSString *nibName = @"PreferencesWin";
 	  DESTROY (self);
 	  return self;
 	} else {
-	[win setFrameUsingName: @"recyclerprefs"];
+	[win setFrameUsingName: @"trashprefs"];
 	[win setDelegate: self];
     
-	recycler = [Recycler recycler];
+	trash = [Trash trash];
       
-	[dockButt setState: ([recycler isDocked] ? NSOnState: NSOffState)];
+	[dockButt setState: ([trash isDocked] ? NSOnState: NSOffState)];
       
 	/* Internationalization */
-	[win setTitle: NSLocalizedString(@"Recycler Preferences", @"")];
+	[win setTitle: NSLocalizedString(@"Trash Preferences", @"")];
 	[dockButt setTitle: NSLocalizedString(@"Dockable", @"")];    
 	[explLabel setStringValue: NSLocalizedString(@"Select to allow docking on the WindowMaker Dock", @"")];
       }			
@@ -74,7 +74,7 @@ static NSString *nibName = @"PreferencesWin";
 
 - (IBAction)setDockable:(id)sender
 {
-  [recycler setDocked: ([sender state] == NSOnState) ? YES : NO];
+  [trash setDocked: ([sender state] == NSOnState) ? YES : NO];
 }
 
 - (void)activate
@@ -84,7 +84,7 @@ static NSString *nibName = @"PreferencesWin";
 
 - (void)updateDefaults
 {
-  [win saveFrameUsingName: @"recyclerprefs"];
+  [win saveFrameUsingName: @"trashprefs"];
 }
                  
 - (NSWindow *)win

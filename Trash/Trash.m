@@ -1,11 +1,11 @@
-/* Recycler.m
+/* Trash.m
  *  
  * Copyright (C) 2004-2016 Free Software Foundation, Inc.
  *
  * Author: Enrico Sersale <enrico@imago.ro>
  * Date: June 2004
  *
- * This file is part of the GNUstep Recycler application
+ * This file is part of the GNUstep Trash application
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,33 +26,33 @@
 #import <AppKit/AppKit.h>
 #import <GNUstepBase/GNUstep.h>
 
-#import "Recycler.h"
-#import "RecyclerView.h"
-#import "Preferences/RecyclerPrefs.h"
+#import "Trash.h"
+#import "TrashView.h"
+#import "Preferences/TrashPrefs.h"
 #import "Dialogs/StartAppWin.h"
 #import "FSNode.h"
 #import "FSNodeRep.h"
 #import "FSNFunctions.h"
 
 
-static Recycler *recycler = nil;
+static Trash *trash = nil;
 
-@implementation Recycler
+@implementation Trash
 
-+ (Recycler *)recycler
++ (Trash *)trash
 {
-	if (recycler == nil) {
-		recycler = [[Recycler alloc] init];
+	if (trash == nil) {
+		trash = [[Trash alloc] init];
 	}	
-  return recycler;
+  return trash;
 }
 
 + (void)initialize
 {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  [defaults setObject: @"Recycler" 
+  [defaults setObject: @"Trash" 
                forKey: @"DesktopApplicationName"];
-  [defaults setObject: @"recycler" 
+  [defaults setObject: @"trash" 
                forKey: @"DesktopApplicationSelName"];
   [defaults synchronize];
 }
@@ -101,7 +101,7 @@ static Recycler *recycler = nil;
 
 	if ([fm fileExistsAtPath: tpath isDirectory: &isdir] == NO) {
     if ([fm createDirectoryAtPath: tpath attributes: nil] == NO) {
-      NSLog(@"Can't create the Recycler directory! Quitting now.");
+      NSLog(@"Can't create the Trash directory! Quitting now.");
       [NSApp terminate: self];
     }
 	}
@@ -115,15 +115,15 @@ static Recycler *recycler = nil;
   docked = [[NSUserDefaults standardUserDefaults] boolForKey: @"docked"];
 
   if (docked) {
-    recview = [[RecyclerView alloc] init];
+    recview = [[TrashView alloc] init];
     [[[NSApp iconWindow] contentView] addSubview: recview];
   } else {
     [NSApp setApplicationIconImage: [NSApp applicationIconImage]];
-    recview = [[RecyclerView alloc] initWithWindow];
+    recview = [[TrashView alloc] initWithWindow];
     [recview activate];
   }
   
-  preferences = [RecyclerPrefs new];
+  preferences = [TrashPrefs new];
 
   startAppWin = [[StartAppWin alloc] init];
   
@@ -171,13 +171,13 @@ static Recycler *recycler = nil;
   if (docked) {
     [[recview window] close];
     DESTROY (recview);
-    recview = [[RecyclerView alloc] init];
+    recview = [[TrashView alloc] init];
     [[[NSApp iconWindow] contentView] addSubview: recview];
 
   } else {
     [recview removeFromSuperview];
     DESTROY (recview);
-    recview = [[RecyclerView alloc] initWithWindow];
+    recview = [[TrashView alloc] initWithWindow];
     [recview activate];
   }
 }
@@ -281,7 +281,7 @@ static Recycler *recycler = nil;
     
       cmd = [NSTask launchPathForTool: @"fswatcher"];    
                 
-      [startAppWin showWindowWithTitle: @"Recycler"
+      [startAppWin showWindowWithTitle: @"Trash"
                                appName: @"fswatcher"
                           maxProgValue: 40.0];
     
@@ -489,7 +489,7 @@ static Recycler *recycler = nil;
       [files addObject: [(FSNode *)[subNodes objectAtIndex: i] name]];
     }
     
-    [self performFileOperation: @"GWorkspaceEmptyRecyclerOperation"
+    [self performFileOperation: @"GWorkspaceEmptyTrashOperation"
 		                    source: trashPath
 		               destination: trashPath
 		                     files: files];

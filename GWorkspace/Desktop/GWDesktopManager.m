@@ -212,7 +212,7 @@ static GWDesktopManager *desktopManager = nil;
 
   if ([fm fileExistsAtPath: path isDirectory: &isdir] == NO) {
     if ([fm createDirectoryAtPath: path attributes: nil] == NO) {
-      NSLog(@"Can't create the Recycler directory! Quitting now.");
+      NSLog(@"Can't create the Trash directory! Quitting now.");
       [NSApp terminate: self];
     }
   }
@@ -661,7 +661,7 @@ inFileViewerRootedAtPath:(NSString *)rootFullpath
   help = @"Dock.rtfd";
   [manager setContextHelp: (NSAttributedString *)help withObject: dock];
   
-  help = @"Recycler.rtfd";
+  help = @"Trash.rtfd";
   [manager setContextHelp: (NSAttributedString *)help 
                withObject: [dock trashIcon]];
 }
@@ -826,7 +826,7 @@ inFileViewerRootedAtPath:(NSString *)rootFullpath
 
 - (void)emptyTrash
 {
-  [gworkspace emptyRecycler: nil];
+  [gworkspace emptyTrash: nil];
 }
 
 - (void)deleteFiles

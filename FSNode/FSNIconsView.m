@@ -2470,7 +2470,7 @@ static void GWHighlightFrameRect(NSRect aRect)
     }
   else if ([ednode isSubnodeOfPath: [desktopApp trashPath]])
     {
-      showAlertInRecycler([FSNode class]);
+      showAlertInTrash([FSNode class]);
       CLEAREDITING;
     }
   else

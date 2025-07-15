@@ -1,11 +1,11 @@
-/* RecyclerView.h
+/* TrashView.h
  *  
  * Copyright (C) 2004-2013 Free Software Foundation, Inc.
  *
  * Author: Enrico Sersale <enrico@imago.ro>
  * Date: June 2004
  *
- * This file is part of the GNUstep Recycler application
+ * This file is part of the GNUstep Trash application
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,41 +23,41 @@
  */
 
 #import <AppKit/NSView.h>
-#import "Recycler.h"
+#import "Trash.h"
 #import "FSNodeRep.h"
 
 @class NSImage;
-@class RecyclerIcon;
+@class TrashIcon;
 
-@interface RecyclerWindow : NSWindow 
+@interface TrashWindow : NSWindow 
 {
   id icon;
 }
 
-- (void)setRecyclerIcon:(id)icn;
+- (void)setTrashIcon:(id)icn;
 
 @end
 
-@interface RecyclerView : NSView
+@interface TrashView : NSView
 {
-  RecyclerWindow *win;
-  RecyclerIcon *icon;
+  TrashWindow *win;
+  TrashIcon *icon;
   NSImage *tile;
-  Recycler *recycler;  
+  Trash *trash;  
 }
 
 - (id)initWithWindow;
 
 - (void)activate;
 
-- (RecyclerIcon *)trashIcon;
+- (TrashIcon *)trashIcon;
 
 - (void)updateDefaults;
 
 @end
 
 
-@interface RecyclerView (NodeRepContainer)
+@interface TrashView (NodeRepContainer)
 
 - (void)nodeContentsDidChange:(NSDictionary *)info;
 

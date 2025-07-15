@@ -1,11 +1,11 @@
-/* RecyclerPrefs.h
+/* StartAppWin.h
  *  
  * Copyright (C) 2004 Free Software Foundation, Inc.
  *
  * Author: Enrico Sersale <enrico@imago.ro>
  * Date: June 2004
  *
- * This file is part of the GNUstep Recycler application
+ * This file is part of the GNUstep Trash application
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,30 +22,27 @@
  * Foundation, Inc., 31 Milk Street #960789 Boston, MA 02196 USA.
  */
 
-#ifndef RECYCLER_PREFS_H
-#define RECYCLER_PREFS_H
+#ifndef START_APP_WIN
+#define START_APP_WIN
 
 #include <Foundation/Foundation.h>
 
-@class Recycler;
-
-@interface RecyclerPrefs: NSObject
+@interface StartAppWin: NSObject
 {
   IBOutlet id win;
-  IBOutlet id dockButt;
-  IBOutlet id explLabel;
-  
-  Recycler *recycler;
+  IBOutlet id startLabel;
+  IBOutlet id nameField;
+  IBOutlet id progInd;
 }
+                 
+- (void)showWindowWithTitle:(NSString *)title
+                    appName:(NSString *)appname
+               maxProgValue:(double)maxvalue;
 
-- (IBAction)setDockable:(id)sender;
-
-- (void)activate;
-
-- (void)updateDefaults;
+- (void)updateProgressBy:(double)incr;
 
 - (NSWindow *)win;
 
 @end 
 
-#endif // RECYCLER_PREFS_H
+#endif // START_APP_WIN

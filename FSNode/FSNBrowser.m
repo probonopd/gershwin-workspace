@@ -1720,7 +1720,7 @@
         || [operation isEqual: NSWorkspaceDestroyOperation]
 				|| [operation isEqual: NSWorkspaceRecycleOperation]
 				|| [operation isEqual: @"GWorkspaceRecycleOutOperation"]
-				|| [operation isEqual: @"GWorkspaceEmptyRecyclerOperation"]) {
+				|| [operation isEqual: @"GWorkspaceEmptyTrashOperation"]) {
     if ([self isShowingPath: source]) {
       [self reloadFromColumnWithPath: source]; 
     }
@@ -2289,7 +2289,7 @@
       }
     else if ([ednode isSubnodeOfPath: [desktopApp trashPath]])
       {
-	showAlertInRecycler([FSNode class]);
+	showAlertInTrash([FSNode class]);
 	CLEAREDITING;
       }
     else

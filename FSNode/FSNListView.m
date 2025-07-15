@@ -1588,7 +1588,7 @@ shouldEditTableColumn:(NSTableColumn *)aTableColumn
     }
   else if ([ednode isSubnodeOfPath: [desktopApp trashPath]])
     {
-      showAlertInRecycler([FSNode class]);
+      showAlertInTrash([FSNode class]);
       CLEAREDITING;
     }
   else

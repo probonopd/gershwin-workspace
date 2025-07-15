@@ -101,8 +101,8 @@ add comments above this one
 /* File: ../FSNFunctions.m:191 */
 "The name " = "The name ";
 /* File: ../FSNFunctions.m:154 */
-"You can't rename an object that is in the Recycler"
-  = "You can't rename an object that is in the Recycler";
+"You can't rename an object that is in the Trash"
+  = "You can't rename an object that is in the Trash";
 /* File: ../FSNFunctions.m:145 */
 "You do not have write permission for"
   = "You do not have write permission for";

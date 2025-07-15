@@ -671,7 +671,7 @@
   }
 
   if ([operation isEqual: @"GWorkspaceRecycleOutOperation"]
-			    || [operation isEqual: @"GWorkspaceEmptyRecyclerOperation"]
+			    || [operation isEqual: @"GWorkspaceEmptyTrashOperation"]
           || [operation isEqual: NSWorkspaceMoveOperation]
           || [operation isEqual: NSWorkspaceDestroyOperation]) { 
     DockIcon *icon = [self trashIcon];
@@ -679,7 +679,7 @@
     NSString *trashPath = [node path];
     NSString *basePath;
     
-    if ([operation isEqual: @"GWorkspaceEmptyRecyclerOperation"]
+    if ([operation isEqual: @"GWorkspaceEmptyTrashOperation"]
                 || [operation isEqual: NSWorkspaceDestroyOperation]) { 
       basePath = destination;  
     } else {

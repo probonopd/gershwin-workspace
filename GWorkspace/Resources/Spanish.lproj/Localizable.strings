@@ -22,8 +22,8 @@
         "New File" = "Nuevo Fichero";
         "Duplicate" = "Duplicar";
         "Destroy" = "Destruir";
-        "Move to Recycler" = "Mover a la Papelera";
-        "Empty Recycler" = "Vaciar Papelera";
+        "Move to Trash" = "Mover a la Papelera";
+        "Empty Trash" = "Vaciar Papelera";
 
 "Edit" = "Editar";
         "Cut" = "Cortar";
@@ -79,8 +79,8 @@
                 "Go forward" = "Ir adelante";
         "Show Desktop" = "Mostrar Escritorio";
         "Hide Desktop" = "Ocultar Escritorio";
-        "Show Recycler" = "Mostrar Papelera";
-        "Hide Recycler" = "Ocultar Papelera";
+        "Show Trash" = "Mostrar Papelera";
+        "Hide Trash" = "Ocultar Papelera";
         "Check for disks" = "Verificar discos";
         
 "Windows" = "Ventanas";
@@ -422,14 +422,14 @@
 "Type the command to execute:" = "Escribe el comando a ejecutar";
 
 
-/* Recycler strings */
+/* Trash strings */
 "Recycle: " = "Enviar a la papelera: ";
-"Recycler: " = "Papelera: ";
-"Recycler" = "Papelera";
-"the Recycler" = "la Papelera";
-"\nto the Recycler" = "\na la Papelera";
-"Move from the Recycler " = "Mover de la Papelera ";
+"Trash: " = "Papelera: ";
+"Trash" = "Papelera";
+"the Trash" = "la Papelera";
+"\nto the Trash" = "\na la Papelera";
+"Move from the Trash " = "Mover de la Papelera ";
 "In" = "En";
-"Empty Recycler" = "Vaciar papelera";
-"Empty the Recycler?" = "¿Vaciar la Papelera?";
+"Empty Trash" = "Vaciar papelera";
+"Empty the Trash?" = "¿Vaciar la Papelera?";
 "Put Away" = "Tirar";

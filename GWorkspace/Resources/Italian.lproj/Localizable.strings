@@ -16,8 +16,8 @@
 	"New File" = "Nuovo File";
 	"Duplicate" = "Duplica";	
 	"Destroy" = "Distruggi";
-        "Move to Recycler" = "Sposta nel Cestino";
-	"Empty Recycler" = "Vuota il Cestino";
+        "Move to Trash" = "Sposta nel Cestino";
+	"Empty Trash" = "Vuota il Cestino";
 
 "Edit" = "Modifica";
 	"Cut" = "Taglia";
@@ -72,8 +72,8 @@
 		"Go forward" = "Avanti";
         "Show Desktop" = "Mostra Scrivania";
         "Hide Desktop" = "Nascondi Scrivania";
-	"Show Recycler" = "Mostra Cestino";
-        "Hide Recycler" = "Nascondi Cestino";
+	"Show Trash" = "Mostra Cestino";
+        "Hide Trash" = "Nascondi Cestino";
 	"Check for disks" = "Verifica dischi";
 
 "Windows" = "Finestre";
@@ -418,17 +418,17 @@
 "Type the command to execute:"="Digitare il comando da esegure";
 
 
-/* Recycler strings */
+/* Trash strings */
 
 "Recycle: " = "Cestinare: ";
-"Recycler: " = "Cestino: ";
-"Recycler" = "Cestino";
-"the Recycler" = "il Cestino";
-"\nto the Recycler" = "\nnel Cestino";
-"Move from the Recycler " = "Sposta dal Cestino ";
+"Trash: " = "Cestino: ";
+"Trash" = "Cestino";
+"the Trash" = "il Cestino";
+"\nto the Trash" = "\nnel Cestino";
+"Move from the Trash " = "Sposta dal Cestino ";
 "In" = "In";
-"Empty Recycler" = "Svuotare il Cestino";
-"Empty the Recycler?" = "Svuotare il Cestino?";
+"Empty Trash" = "Svuotare il Cestino";
+"Empty the Trash?" = "Svuotare il Cestino?";
 "Put Away" = "Ripristina";
 
 

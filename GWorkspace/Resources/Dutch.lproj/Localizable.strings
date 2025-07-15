@@ -18,7 +18,7 @@
 	"New File" = "Nieuw Bestand";
 	"Duplicate" = "Dupliceer";
 	"Destroy" = "Vernietig";
-	"Empty Recycler" = "Prullenmand Leegmaken";
+	"Empty Trash" = "Prullenmand Leegmaken";
 
 "Edit" = "Bewerken";
 	"Cut" = "Knippen";
@@ -315,17 +315,17 @@
 "Run" = "Run";
 "Type the command to execute:"="Type the command to execute:";
 
-/* Recycler strings */
+/* Trash strings */
 
 "Recycle: " = "Steek in de prullenmand: ";
-"Recycler: " = "Prullenmand : ";
-"Recycler" = "Prullenmand";
-"the Recycler" = "de Prullenmand";
-"\nto the Recycler" = "\nin de Prullenmand";
-"Move from the Recycler " = "Haal uit de prullenmand ";
+"Trash: " = "Prullenmand : ";
+"Trash" = "Prullenmand";
+"the Trash" = "de Prullenmand";
+"\nto the Trash" = "\nin de Prullenmand";
+"Move from the Trash " = "Haal uit de prullenmand ";
 "In" = "In";
-"Empty Recycler" = "Ledig de Prullenmand";
-"Empty the Recycler?" = "Ledig de Prullenmand?";
+"Empty Trash" = "Ledig de Prullenmand";
+"Empty the Trash?" = "Ledig de Prullenmand?";
 "Put Away" = "Doe Weg";
 
 
