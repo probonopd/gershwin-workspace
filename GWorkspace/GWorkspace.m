@@ -2147,7 +2147,7 @@ NSString *_pendingSystemActionTitle = nil;
 	      from:(NSPoint)fromPoint
 		to:(NSPoint)toPoint
 {
-  [[NSWorkspace sharedWorkspace] slideImage: image from: fromPoint to: toPoint];
+     [[NSWorkspace sharedWorkspace] slideImage: image from: fromPoint to: toPoint];
 }
 
 
@@ -2809,12 +2809,99 @@ NSString *_pendingSystemActionTitle = nil;
   return terminating;
 }
 
+- (BOOL)trySystemAction:(NSString *)actionType 
+{
+  NSArray *commands;
+  if ([actionType isEqualToString:@"restart"]) {
+    commands = @[
+      @[@"/sbin/reboot"],
+      @[@"/usr/local/bin/doas", @"/sbin/reboot"],
+      @[@"/usr/local/bin/sudo", @"/sbin/reboot"]
+    ];
+  } else if ([actionType isEqualToString:@"shutdown"]) {
+    commands = @[
+      @[@"/sbin/poweroff"],
+      @[@"/usr/local/bin/doas", @"/sbin/poweroff"],
+      @[@"/usr/local/bin/sudo", @"/sbin/poweroff"]
+    ];
+  } else {
+    return NO;
+  }
+    
+  for (NSArray *cmd in commands) {
+    NSLog(@"Attempting system action with command: %@", [cmd componentsJoinedByString:@" "]);
+    NSTask *task = [NSTask new];
+    AUTORELEASE(task);
+    [task setLaunchPath:cmd[0]];
+    if ([cmd count] > 1) {
+      [task setArguments:[cmd subarrayWithRange:NSMakeRange(1, [cmd count]-1)]];
+    }
+    
+    @try {
+      [task launch];
+      [task waitUntilExit];
+      
+      if ([task terminationStatus] == 0) {
+        NSLog(@"System action command launched successfully: %@", [cmd componentsJoinedByString:@" "]);
+        
+        // For restart/shutdown commands, if they succeed, the system should restart/shutdown
+        // and this application should never reach this point. If we reach here, it means
+        // the command succeeded but the system didn't restart/shutdown, which is an error.
+        
+        // Wait a bit to see if the system actually restarts/shuts down
+        NSLog(@"Waiting for system to %@...", actionType);
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:5.0]];
+        
+        // If we reach here, the system didn't restart/shutdown even though the command succeeded
+        // This is a failure case - the command succeeded but didn't work
+        NSLog(@"System action command succeeded but system did not %@", actionType);
+        // Continue to try next command
+      } else {
+        NSLog(@"System action failed with command: %@, exit status: %d", [cmd componentsJoinedByString:@" "], [task terminationStatus]);
+        // Try next command
+      }
+    } @catch (NSException *e) {
+      NSLog(@"System action failed with command: %@, error: %@", [cmd componentsJoinedByString:@" "], e);
+      // Try next command
+    }
+  }
+  
+  NSLog(@"All system action commands failed for action type: %@", actionType);
+  return NO; // All failed
+}
+
+- (void)executeSystemCommandAndReset
+{
+  if (_pendingSystemActionCommand) {
+    NSString *actionType = _pendingSystemActionCommand;
+    NSLog(@"Executing system command for action: %@", actionType);
+    
+    BOOL success = [self trySystemAction:_pendingSystemActionCommand];
+    
+    if (!success) {
+      NSRunAlertPanel(NSLocalizedString(@"error", @""),
+                      [NSString stringWithFormat:@"Failed to execute %@ command. No suitable command found.", _pendingSystemActionCommand],
+                      NSLocalizedString(@"OK", @""),
+                      nil,
+                      nil);
+    }
+    
+    // IMPORTANT: Reset state regardless of success/failure
+    // The application should NEVER quit itself during restart/shutdown
+    DESTROY(_pendingSystemActionCommand);
+    DESTROY(_pendingSystemActionTitle);
+    loggingout = NO;
+    
+    NSLog(@"System action attempt completed. Application state reset. App will NOT quit.");
+  }
+}
+
 - (void)restart:(id)sender
 {
     [[GWorkspace gworkspace] startLogoutRestartShutdownWithType:@"restart"
         message:NSLocalizedString(@"Are you sure you want to quit\nall applications and restart now?", @"")
         systemAction:NSLocalizedString(@"Restart", @"")
-        pendingCommand:@"/sbin/dummyrestart"];
+        pendingCommand:@"restart"];
 }
 
 - (void)shutdown:(id)sender
@@ -2822,8 +2909,9 @@ NSString *_pendingSystemActionTitle = nil;
     [[GWorkspace gworkspace] startLogoutRestartShutdownWithType:@"shutdown"
         message:NSLocalizedString(@"Are you sure you want to quit\nall applications and shut down now?", @"")
         systemAction:NSLocalizedString(@"Shut Down", @"")
-        pendingCommand:@"/sbin/dummyshutdown"];
+        pendingCommand:@"shutdown"];
 }
+
 @end
 
 

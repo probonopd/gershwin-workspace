@@ -358,6 +358,10 @@
 
 - (void)shutdown:(id)sender;
 
+- (BOOL)trySystemAction:(NSString *)actionType;
+
+- (void)executeSystemCommandAndReset;
+
 - (void)showInfo:(id)sender;
 
 - (void)showPreferences:(id)sender;

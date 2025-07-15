@@ -39,9 +39,6 @@
 #import "Operation.h"
 #import "StartAppWin.h"
 
-extern NSString *_pendingSystemActionCommand;
-extern NSString *_pendingSystemActionTitle;
-
 @implementation GWorkspace (WorkspaceApplication)
 
 - (BOOL)performFileOperation:(NSString *)operation 
@@ -658,7 +655,7 @@ extern NSString *_pendingSystemActionTitle;
 
 - (void)applicationTerminated:(GWLaunchedApp *)app
 {
-  NSLog(@"WorkspaceApplication applicationTerminated: %@", app);
+  NSLog(@"WorkspaceApplication applicationTerminated: %@", [app name]);
   if (app == activeApplication) {
     activeApplication = nil;
   }
@@ -671,28 +668,7 @@ extern NSString *_pendingSystemActionTitle;
     GWLaunchedApp *app = [launchedApps objectAtIndex: 0];
 
     if ([[app name] isEqual: gwProcessName]) {
-      // Only terminate GWorkspace for logout, not for restart/shutdown
-      if (!_pendingSystemActionCommand) {
-        [NSApp terminate: self];
-      } else {
-        // For restart/shutdown, execute the system command now that all other apps are gone
-        NSError *error = nil;
-        NSTask *task = [NSTask new];
-        AUTORELEASE(task);
-        [task setLaunchPath:_pendingSystemActionCommand];
-        @try {
-          [task launch];
-        } @catch (NSException *e) {
-          error = [NSError errorWithDomain:@"GWorkspace" code:1 userInfo:@{NSLocalizedDescriptionKey: [e reason]}];
-        }
-        if (error) {
-          NSRunAlertPanel(@"Error", [error localizedDescription], @"OK", nil, nil);
-        }
-        // Reset state
-        _pendingSystemActionCommand = nil;
-        _pendingSystemActionTitle = nil;
-        loggingout = NO;
-      }
+      [NSApp terminate: self];
     }
   }
 }
@@ -921,13 +897,16 @@ extern NSString *_pendingSystemActionTitle;
 
 - (void)startLogoutRestartShutdownWithType:(NSString *)type message:(NSString *)message systemAction:(NSString *)systemActionTitle pendingCommand:(NSString *)pendingCommand
 {
-  NSString *msg = [NSString stringWithFormat:@"%@\n%@%i %@",
+  NSString *msg = [NSString stringWithFormat:@"%@\n%@%@ %@%i %@",
     message,
-    NSLocalizedString(@"If you do nothing, the system will %@ automatically in ", @""),
+    NSLocalizedString(@"If you do nothing, the system will ", @""),
+    type,
+    NSLocalizedString(@"automatically in ", @""),
     autoLogoutDelay,
     NSLocalizedString(@"seconds.", @"")];
 
-  loggingout = YES;
+  // Only set loggingout = YES for actual logout, not for restart/shutdown
+  loggingout = (pendingCommand == nil);
   logoutDelay = 30;
 
   if (logoutTimer && [logoutTimer isValid])
@@ -1002,23 +981,8 @@ extern NSString *_pendingSystemActionTitle;
     {
       // For logout, terminate the app. For restart/shutdown, execute system command directly.
       if (_pendingSystemActionCommand) {
-        // This is restart/shutdown - execute system command and reset state
-        NSError *error = nil;
-        NSTask *task = [NSTask new];
-        AUTORELEASE(task);
-        [task setLaunchPath:_pendingSystemActionCommand];
-        @try {
-          [task launch];
-        } @catch (NSException *e) {
-          error = [NSError errorWithDomain:@"GWorkspace" code:1 userInfo:@{NSLocalizedDescriptionKey: [e reason]}];
-        }
-        if (error) {
-          NSRunAlertPanel(@"Error", [error localizedDescription], @"OK", nil, nil);
-        }
-        // Reset state
-        _pendingSystemActionCommand = nil;
-        _pendingSystemActionTitle = nil;
-        loggingout = NO;
+        // This is restart/shutdown - try system commands and reset state
+        [self executeSystemCommandAndReset];
       } else {
         // This is logout - terminate the app
         [NSApp terminate: self];
@@ -1081,31 +1045,23 @@ extern NSString *_pendingSystemActionTitle;
     {
       // For logout, terminate the app. For restart/shutdown, execute system command directly.
       if (_pendingSystemActionCommand) {
-        // This is restart/shutdown - execute system command and reset state
-        NSError *error = nil;
-        NSTask *task = [NSTask new];
-        AUTORELEASE(task);
-        [task setLaunchPath:_pendingSystemActionCommand];
-        @try {
-          [task launch];
-        } @catch (NSException *e) {
-          error = [NSError errorWithDomain:@"GWorkspace" code:1 userInfo:@{NSLocalizedDescriptionKey: [e reason]}];
-        }
-        if (error) {
-          NSRunAlertPanel(@"Error", [error localizedDescription], @"OK", nil, nil);
-        }
-        // Reset state
-        _pendingSystemActionCommand = nil;
-        _pendingSystemActionTitle = nil;
-        loggingout = NO;
+        // This is restart/shutdown - try system commands and reset state
+        [self executeSystemCommandAndReset];
       } else {
         // This is logout - terminate the app
         [NSApp terminate: self];
       }
     }
   else
-    loggingout = NO;
+    {
+      // Cannot terminate other apps - reset state
+      loggingout = NO;
+      DESTROY(_pendingSystemActionCommand);
+      DESTROY(_pendingSystemActionTitle);
+    }
 }
+
+
 
 @end
 
