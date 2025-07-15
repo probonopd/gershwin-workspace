@@ -354,6 +354,10 @@
 
 - (void)logout:(id)sender;
 
+- (void)restart:(id)sender;
+
+- (void)shutdown:(id)sender;
+
 - (void)showInfo:(id)sender;
 
 - (void)showPreferences:(id)sender;
@@ -523,9 +527,11 @@
 
 - (void)startLogout;
 
-- (void)doLogout:(id)sender;
+- (void)startLogoutRestartShutdownWithType:(NSString *)type message:(NSString *)message systemAction:(NSString *)systemActionTitle pendingCommand:(NSString *)pendingCommand;
 
-- (void)terminateTasks:(id)sender;
+- (void)doLogoutRestartShutdown:(id)sender;
+
+- (void)terminateTasksForLogoutRestartShutdown:(id)sender;
 
 @end
 

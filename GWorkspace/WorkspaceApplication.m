@@ -914,7 +914,7 @@ extern NSString *_pendingSystemActionTitle;
 
   ASSIGN(logoutTimer, [NSTimer scheduledTimerWithTimeInterval:autoLogoutDelay
                                                        target:self
-                                                     selector:@selector(doLogout:)
+                                                     selector:@selector(doLogoutRestartShutdown:)
                                                      userInfo:nil
                                                       repeats:NO]);
   [[NSRunLoop currentRunLoop] addTimer:logoutTimer forMode:NSModalPanelRunLoopMode];
@@ -931,7 +931,7 @@ extern NSString *_pendingSystemActionTitle;
         _pendingSystemActionCommand = pendingCommand;
         _pendingSystemActionTitle = systemActionTitle;
       }
-      [self doLogout:nil];
+      [self doLogoutRestartShutdown:nil];
     }
   else
     {
@@ -953,7 +953,7 @@ extern NSString *_pendingSystemActionTitle;
                              pendingCommand:nil];
 }
 
-- (void)doLogout:(id)sender
+- (void)doLogoutRestartShutdown:(id)sender
 {
   NSMutableArray *launched = [NSMutableArray array];
   GWLaunchedApp *gwapp = [self launchedAppWithPath: gwBundlePath andName: gwProcessName];
@@ -973,7 +973,7 @@ extern NSString *_pendingSystemActionTitle;
     {
       ASSIGN (logoutTimer, [NSTimer scheduledTimerWithTimeInterval: logoutDelay
                                                             target: self 
-                                                          selector: @selector(terminateTasks:) 
+                                                          selector: @selector(terminateTasksForLogoutRestartShutdown:) 
                                                           userInfo: nil 
                                                            repeats: NO]);
     }
@@ -983,7 +983,7 @@ extern NSString *_pendingSystemActionTitle;
     }
 }
 
-- (void)terminateTasks:(id)sender
+- (void)terminateTasksForLogoutRestartShutdown:(id)sender
 {
   BOOL canterminate = YES;
 
@@ -1016,10 +1016,10 @@ extern NSString *_pendingSystemActionTitle;
                       appNames, 
                       NSLocalizedString(@"refuse to terminate.", @"")];    
 
-      if (NSRunAlertPanel(NSLocalizedString(@"Logout", @""),
+      if (NSRunAlertPanel(_pendingSystemActionTitle ? _pendingSystemActionTitle : NSLocalizedString(@"Logout", @""),
                           msg,
                           NSLocalizedString(@"Kill applications", @""),
-                          NSLocalizedString(@"Cancel logout", @""),
+                          NSLocalizedString(@"Cancel", @""),
                           nil))
         {
           for (i = 0; i < [launched count]; i++)
