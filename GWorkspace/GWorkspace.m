@@ -66,6 +66,9 @@ static NSString *defaultxterm = @"xterm";
 
 static GWorkspace *gworkspace = nil;
 
+static NSString *_pendingSystemActionCommand = nil;
+static NSString *_pendingSystemActionTitle = nil;
+
 @interface	GWorkspace (PrivateMethods)
 - (void)_updateTrashContents;
 @end
@@ -163,18 +166,18 @@ static GWorkspace *gworkspace = nil;
   NSMenu *subMenu;
   NSMenu *windows, *services;  
   id<NSMenuItem> menuItem;
-    	
+    
   // Info
   menuItem = [mainMenu addItemWithTitle:_(@"Info") action:NULL keyEquivalent:@""];
   menu = AUTORELEASE ([NSMenu new]);
-  [mainMenu setSubmenu: menu forItem: menuItem];	
+  [mainMenu setSubmenu: menu forItem: menuItem];  
   [menu addItemWithTitle: _(@"About Workspace") action:@selector(showInfo:) keyEquivalent:@""];
   [menu addItemWithTitle: _(@"Preferences...") action:@selector(showPreferences:) keyEquivalent:@","];
-	 
+   
   // File
   menuItem = [mainMenu addItemWithTitle:_(@"File") action:NULL keyEquivalent:@""];
   menu = AUTORELEASE ([NSMenu new]);
-  [mainMenu setSubmenu: menu forItem: menuItem];		
+  [mainMenu setSubmenu: menu forItem: menuItem];    
   [menu addItemWithTitle:_(@"Open") action:@selector(openSelection:) keyEquivalent:@"o"];
   [menu addItemWithTitle:_(@"Open With...")  action:@selector(openWith:) keyEquivalent:@""];
   [menu addItemWithTitle:_(@"Open as Folder") action:@selector(openSelectionAsFolder:) keyEquivalent:@"O"];
@@ -188,7 +191,7 @@ static GWorkspace *gworkspace = nil;
   // Edit
   menuItem = [mainMenu addItemWithTitle:_(@"Edit") action:NULL keyEquivalent:@""];
   menu = AUTORELEASE ([NSMenu new]);
-  [mainMenu setSubmenu: menu forItem: menuItem];	
+  [mainMenu setSubmenu: menu forItem: menuItem];  
   [menu addItemWithTitle:_(@"Cut") action:@selector(cut:) keyEquivalent:@"x"];
   [menu addItemWithTitle:_(@"Copy") action:@selector(copy:) keyEquivalent:@"c"];
   [menu addItemWithTitle:_(@"Paste") action:@selector(paste:) keyEquivalent:@"v"];
@@ -304,15 +307,17 @@ static GWorkspace *gworkspace = nil;
 
   // Print
   [mainMenu addItemWithTitle:_(@"Print...") action:@selector(print:) keyEquivalent:@"p"];
-	
-  // Logout
+  
+  // Restart, Shut Down, Log Out
+  [mainMenu addItemWithTitle:_(@"Restart...") action:@selector(restart:) keyEquivalent:@""];
+  [mainMenu addItemWithTitle:_(@"Shut Down...") action:@selector(shutdown:) keyEquivalent:@""];
   [mainMenu addItemWithTitle:_(@"Logout") action:@selector(logout:) keyEquivalent:@""];
 
   [mainMenu update];
 
   [NSApp setServicesMenu: services];
   [NSApp setWindowsMenu: windows];
-  [NSApp setMainMenu: mainMenu];		
+  [NSApp setMainMenu: mainMenu];    
   
   RELEASE (mainMenu);
 }
@@ -583,19 +588,6 @@ static GWorkspace *gworkspace = nil;
                   nil, 
                   nil);  
     return NSTerminateCancel;  
-  }
-    
-  if ((dontWarnOnQuit == NO) && (loggingout == NO))
-    {
-      if (NSRunAlertPanel(NSLocalizedString(@"Quit!", @""),
-			  NSLocalizedString(@"Do you really want to quit?", @""),
-			  NSLocalizedString(@"Yes", @""),
-			  NSLocalizedString(@"No", @""),
-			  nil,
-			  nil) != NSAlertDefaultReturn)
-      {
-	return NSTerminateCancel;
-      }
   }
 
   if (logoutTimer && [logoutTimer isValid]) {
@@ -2017,8 +2009,8 @@ static GWorkspace *gworkspace = nil;
   id connection = [notif object];
 
   [[NSNotificationCenter defaultCenter] removeObserver: self
-	                    name: NSConnectionDidDieNotification
-	                  object: connection];
+						  name: NSConnectionDidDieNotification
+						object: connection];
 
   NSAssert(connection == [ddbd connectionForProxy],
 		                                  NSInternalInconsistencyException);
@@ -2139,7 +2131,7 @@ static GWorkspace *gworkspace = nil;
 		      NSLocalizedString(@"Yes", @""),
 		      NSLocalizedString(@"No", @""),
 		      nil))
-    {
+       {
       [self connectMDExtractor];
     }
 }
@@ -2810,6 +2802,19 @@ static GWorkspace *gworkspace = nil;
   return terminating;
 }
 
+- (void)restart:(id)sender
+{
+    _pendingSystemActionCommand = @"/sbin/dummyrestart";
+    _pendingSystemActionTitle = _(@"Restart");
+    [NSApp terminate:self];
+}
+
+- (void)shutdown:(id)sender
+{
+    _pendingSystemActionCommand = @"/sbin/dummyshutdown";
+    _pendingSystemActionTitle = _(@"Shut Down");
+    [NSApp terminate:self];
+}
 @end
 
 

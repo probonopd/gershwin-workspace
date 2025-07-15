@@ -404,6 +404,9 @@
 
 - (void)emptyRecycler:(id)sender;
 
+- (void)restart:(id)sender;
+- (void)shutdown:(id)sender;
+
 
 //
 // DesktopApplication protocol
