@@ -611,4 +611,7 @@
 
 @end
 
+extern NSString *_pendingSystemActionCommand;
+extern NSString *_pendingSystemActionTitle;
+
 #endif // GWORKSPACE_H

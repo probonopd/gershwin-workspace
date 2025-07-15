@@ -66,8 +66,8 @@ static NSString *defaultxterm = @"xterm";
 
 static GWorkspace *gworkspace = nil;
 
-static NSString *_pendingSystemActionCommand = nil;
-static NSString *_pendingSystemActionTitle = nil;
+NSString *_pendingSystemActionCommand = nil;
+NSString *_pendingSystemActionTitle = nil;
 
 @interface	GWorkspace (PrivateMethods)
 - (void)_updateTrashContents;
@@ -577,6 +577,12 @@ static NSString *_pendingSystemActionTitle = nil;
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)app 
 {
+  // Only allow termination if a logout or system action is pending
+  if (!_pendingSystemActionCommand && !loggingout) {
+    // Not a logout or system action, do not quit
+    return NSTerminateCancel;
+  }
+
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   
 #define TEST_CLOSE(o, w) if ((o) && ([w isVisible])) [w close]
@@ -727,8 +733,10 @@ static NSString *_pendingSystemActionTitle = nil;
     }
     _pendingSystemActionCommand = nil;
     _pendingSystemActionTitle = nil;
+    return NSTerminateCancel;
+  } else {
+    return NSTerminateNow; 
   }
-  return NSTerminateNow;
 }
 
 - (NSString *)defEditor
@@ -2860,16 +2868,18 @@ static NSString *_pendingSystemActionTitle = nil;
 
 - (void)restart:(id)sender
 {
-    _pendingSystemActionCommand = @"/sbin/dummyrestart";
-    _pendingSystemActionTitle = _(@"Restart");
-    [NSApp terminate:self];
+    [[GWorkspace gworkspace] startLogoutRestartShutdownWithType:@"restart"
+        message:NSLocalizedString(@"Are you sure you want to quit\nall applications and restart now?", @"")
+        systemAction:NSLocalizedString(@"Restart", @"")
+        pendingCommand:@"/sbin/dummyrestart"];
 }
 
 - (void)shutdown:(id)sender
 {
-    _pendingSystemActionCommand = @"/sbin/dummyshutdown";
-    _pendingSystemActionTitle = _(@"Shut Down");
-    [NSApp terminate:self];
+    [[GWorkspace gworkspace] startLogoutRestartShutdownWithType:@"shutdown"
+        message:NSLocalizedString(@"Are you sure you want to quit\nall applications and shut down now?", @"")
+        systemAction:NSLocalizedString(@"Shut Down", @"")
+        pendingCommand:@"/sbin/dummyshutdown"];
 }
 @end
 

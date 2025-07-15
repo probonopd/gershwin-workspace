@@ -39,6 +39,9 @@
 #import "Operation.h"
 #import "StartAppWin.h"
 
+extern NSString *_pendingSystemActionCommand;
+extern NSString *_pendingSystemActionTitle;
+
 @implementation GWorkspace (WorkspaceApplication)
 
 - (BOOL)performFileOperation:(NSString *)operation 
@@ -895,43 +898,59 @@
     }
 }
 
-- (void)startLogout
+- (void)startLogoutRestartShutdownWithType:(NSString *)type message:(NSString *)message systemAction:(NSString *)systemActionTitle pendingCommand:(NSString *)pendingCommand
 {
-  NSString *msg = [NSString stringWithFormat: @"%@\n%@%i %@",
-        NSLocalizedString(@"Are you sure you want to quit\nall applications and log out now?", @""),
-        NSLocalizedString(@"If you do nothing, the system will log out\nautomatically in ", @""),
-        autoLogoutDelay,
-        NSLocalizedString(@"seconds.", @"")];
-  
+  NSString *msg = [NSString stringWithFormat:@"%@\n%@%i %@",
+    message,
+    NSLocalizedString(@"If you do nothing, the system will %@ automatically in ", @""),
+    autoLogoutDelay,
+    NSLocalizedString(@"seconds.", @"")];
+
   loggingout = YES;
   logoutDelay = 30;
-  
+
   if (logoutTimer && [logoutTimer isValid])
     [logoutTimer invalidate];
 
-  ASSIGN (logoutTimer, [NSTimer scheduledTimerWithTimeInterval: autoLogoutDelay
-                                                        target: self 
-                                                      selector: @selector(doLogout:) 
-                                                      userInfo: nil 
-                                                       repeats: NO]);
-  /* we will display a modal panel, so we add the timer to the modal runloop */
-  [[NSRunLoop currentRunLoop] addTimer: logoutTimer forMode: NSModalPanelRunLoopMode];
-                                        
-  if (NSRunAlertPanel(NSLocalizedString(@"Logout", @""),
+  ASSIGN(logoutTimer, [NSTimer scheduledTimerWithTimeInterval:autoLogoutDelay
+                                                       target:self
+                                                     selector:@selector(doLogout:)
+                                                     userInfo:nil
+                                                      repeats:NO]);
+  [[NSRunLoop currentRunLoop] addTimer:logoutTimer forMode:NSModalPanelRunLoopMode];
+
+  if (NSRunAlertPanel(systemActionTitle ? systemActionTitle : NSLocalizedString(@"Logout", @""),
                       msg,
-                      NSLocalizedString(@"Log out", @""),
+                      systemActionTitle ? systemActionTitle : NSLocalizedString(@"Log out", @""),
                       NSLocalizedString(@"Cancel", @""),
                       nil))
     {
-      [logoutTimer invalidate]; 
-      [self doLogout: nil];
+      [logoutTimer invalidate];
+      if (pendingCommand) {
+        // Set up for restart/shutdown
+        _pendingSystemActionCommand = pendingCommand;
+        _pendingSystemActionTitle = systemActionTitle;
+      }
+      [self doLogout:nil];
     }
   else
     {
-      [logoutTimer invalidate]; 
-      DESTROY (logoutTimer);
+      [logoutTimer invalidate];
+      DESTROY(logoutTimer);
       loggingout = NO;
+      if (pendingCommand) {
+        _pendingSystemActionCommand = nil;
+        _pendingSystemActionTitle = nil;
+      }
     }
+}
+
+- (void)startLogout
+{
+  [self startLogoutRestartShutdownWithType:@"logout"
+                                   message:NSLocalizedString(@"Are you sure you want to quit\nall applications and log out now?", @"")
+                              systemAction:nil
+                             pendingCommand:nil];
 }
 
 - (void)doLogout:(id)sender
