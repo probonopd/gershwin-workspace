@@ -2831,7 +2831,7 @@ NSString *_pendingSystemActionTitle = nil;
     NSLog(@"Attempting system action with command: %@", [cmd componentsJoinedByString:@" "]);
     NSTask *task = [NSTask new];
     AUTORELEASE(task);
-    [task setLaunchPath:cmd[0]];
+    [task setLaunchPath:[cmd objectAtIndex:0]];
     if ([cmd count] > 1) {
       [task setArguments:[cmd subarrayWithRange:NSMakeRange(1, [cmd count]-1)]];
     }
