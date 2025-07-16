@@ -897,17 +897,23 @@
 
 - (void)startLogoutRestartShutdownWithType:(NSString *)type message:(NSString *)message systemAction:(NSString *)systemActionTitle pendingCommand:(NSString *)pendingCommand
 {
-  NSString *msg = [NSString stringWithFormat:@"%@\n%@%@\n%@%i %@",
-    message,
-    NSLocalizedString(@"If you do nothing, the system will ", @""),
-    type,
-    NSLocalizedString(@"automatically in ", @""),
-    autoLogoutDelay,
-    NSLocalizedString(@"seconds.", @"")];
+  NSString *msg;
 
   // Only set loggingout = YES for actual logout, not for restart/shutdown
   loggingout = (pendingCommand == nil);
   logoutDelay = 30;
+
+  if (loggingout) {
+    msg = [NSString stringWithFormat:@"%@\n%@%@\n%@%i %@",
+      message,
+      NSLocalizedString(@"If you do nothing, the system will ", @""),
+      type,
+      NSLocalizedString(@"automatically in ", @""),
+      autoLogoutDelay,
+      NSLocalizedString(@"seconds.", @"")];
+  } else {
+    msg = message;
+  }
 
   if (logoutTimer && [logoutTimer isValid])
     [logoutTimer invalidate];
