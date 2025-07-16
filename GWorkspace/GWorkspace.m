@@ -2820,7 +2820,7 @@ NSString *_pendingSystemActionTitle = nil;
     ];
   } else if ([actionType isEqualToString:@"shutdown"]) {
     commands = @[
-      @[@"/sbin/shutdown", @"-h", @"now"], // This does not require root
+      @[@"/sbin/shutdown", @"-h", @"now"],
       @[@"/sbin/poweroff"],
       @[@"/usr/local/bin/doas", @"/sbin/poweroff"],
       @[@"/usr/local/bin/sudo", @"/sbin/poweroff"]
