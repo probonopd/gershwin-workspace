@@ -9,14 +9,19 @@ TOOL_NAME = fswatcher
 
 WITH_INOTIFY=@with_inotify@
 WITH_FAM=@with_fam@
+WITH_KQUEUE=@with_kqueue@
 
 ifeq ($(WITH_INOTIFY),yes)
   fswatcher_OBJC_FILES = fswatcher-inotify.m
 else
-  ifeq ($(WITH_FAM),yes)
-    fswatcher_OBJC_FILES = fswatcher-fam.m
+  ifeq ($(WITH_KQUEUE),yes)
+    fswatcher_OBJC_FILES = fswatcher-kqueue.m
   else
-    fswatcher_OBJC_FILES = fswatcher.m
+    ifeq ($(WITH_FAM),yes)
+      fswatcher_OBJC_FILES = fswatcher-fam.m
+    else
+      fswatcher_OBJC_FILES = fswatcher.m
+    endif
   endif
 endif
 

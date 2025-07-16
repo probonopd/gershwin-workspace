@@ -9,6 +9,8 @@ up to date version installed on your system!
 
 If you are on Linux and want to use the new inotify-based fswatcher, you can pass --with-inotify to configure.
 
+If you are on FreeBSD and want to use the even newer kqueue-based fswatcher, you can pass --with-kqueue to configure.
+
 To enable the new metadata indexing and searching system, cd into the GWMetadata directory and:
 
   ./configure

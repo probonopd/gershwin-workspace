@@ -85,6 +85,15 @@ AC_ARG_WITH(inotify,
   
 AC_SUBST(with_inotify)
 
+#--------------------------------------------------------------------
+# fswatcher-kqueue
+#--------------------------------------------------------------------
+AC_ARG_WITH(kqueue,
+  [  --with-kqueue  Build fswatcher-kqueue],
+  with_kqueue=yes, with_kqueue=no)
+  
+AC_SUBST(with_kqueue)
+
 AC_CONFIG_FILES([
   GNUmakefile
   GWorkspace/GNUmakefile
