@@ -16,8 +16,8 @@
 	"New File" = "New File";
 	"Duplicate" = "Duplicate";	
 	"Destroy" = "Destroy";
-	"Move to Recycler" = "Move to Recycler";
-	"Empty Recycler" = "Empty Recycler";
+	"Move to Recycler" = "Move to Trash";
+	"Empty Recycler" = "Empty Trash";
 
 "Edit" = "Edit";
 	"Cut" = "Cut";
@@ -72,8 +72,8 @@
 		"Go forward" = "Go forward";
 	"Show Desktop" = "Show Desktop";
         "Hide Desktop" = "Hide Desktop";
-	"Show Recycler" = "Show Recycler";
-        "Hide Recycler" = "Hide Recycler";
+	"Show Recycler" = "Show Trash";
+        "Hide Recycler" = "Hide Trash";
 	"Check for disks" = "Check for disks";
 	
 "Windows" = "Windows";
@@ -424,14 +424,14 @@
 
 
 /* Recycler strings */
-"Recycle: " = "Recycle: ";
-"Recycler: " = "Recycler: ";
-"Recycler" = "Recycler";
-"the Recycler" = "the Recycler";
-"\nto the Recycler" = "\nto the Recycler";
-"Move from the Recycler " = "Move from the Recycler ";
+"Recycle: " = "Empty Trash: ";
+"Recycler: " = "Trash: ";
+"Recycler" = "Trash";
+"the Recycler" = "the Trash";
+"\nto the Recycler" = "\nto the Trash";
+"Move from the Recycler " = "Move from the Trash ";
 "In" = "In";
-"Empty Recycler" = "Empty Recycler";
-"Empty the Recycler?" = "Empty the Recycler?";
+"Empty Recycler" = "Empty Trash";
+"Empty the Recycler?" = "Empty the Trash?";
 "Put Away" = "Put Away";
 
