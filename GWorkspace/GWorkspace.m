@@ -2811,19 +2811,17 @@ NSString *_pendingSystemActionTitle = nil;
 
 - (BOOL)trySystemAction:(NSString *)actionType 
 {
+  // These arrays can be expanded with more commands if needed for other systems
+  // or if the current commands fail. The order is important - we try the most
+  // common commands first, and if they fail, we try alternatives.
   NSArray *commands;
   if ([actionType isEqualToString:@"restart"]) {
-    commands = @[
-      @[@"/sbin/reboot"],
-      @[@"/usr/local/bin/doas", @"/sbin/reboot"],
-      @[@"/usr/local/bin/sudo", @"/sbin/reboot"]
+    commands = [NSArray arrayWithObjects:
+      [NSArray arrayWithObjects:@"/sbin/shutdown", @"-r", @"now", nil], nil
     ];
   } else if ([actionType isEqualToString:@"shutdown"]) {
-    commands = @[
-      @[@"/sbin/shutdown", @"-h", @"now"],
-      @[@"/sbin/poweroff"],
-      @[@"/usr/local/bin/doas", @"/sbin/poweroff"],
-      @[@"/usr/local/bin/sudo", @"/sbin/poweroff"]
+    commands = [NSArray arrayWithObjects:
+      [NSArray arrayWithObjects:@"/sbin/shutdown", @"-p", @"now", nil], nil
     ];
   } else {
     return NO;
