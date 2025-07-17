@@ -358,10 +358,6 @@
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
   autoLogoutDelay = [defaults integerForKey: @"GSAutoLogoutDelay"];
-  
-  if (autoLogoutDelay == 0) {
-    autoLogoutDelay = 120;
-  }
 
   maxLogoutDelay = [defaults integerForKey: @"GSMaxLogoutDelay"];
   
@@ -902,28 +898,8 @@
   // Only set loggingout = YES for actual logout, not for restart/shutdown
   loggingout = (pendingCommand == nil);
   logoutDelay = 30;
-
-  if (loggingout) {
-    msg = [NSString stringWithFormat:@"%@\n%@%@\n%@%i %@",
-      message,
-      NSLocalizedString(@"If you do nothing, the system will ", @""),
-      type,
-      NSLocalizedString(@"automatically in ", @""),
-      autoLogoutDelay,
-      NSLocalizedString(@"seconds.", @"")];
-  } else {
-    msg = message;
-  }
-
-  if (logoutTimer && [logoutTimer isValid])
-    [logoutTimer invalidate];
-
-  ASSIGN(logoutTimer, [NSTimer scheduledTimerWithTimeInterval:autoLogoutDelay
-                                                       target:self
-                                                     selector:@selector(doLogoutRestartShutdown:)
-                                                     userInfo:nil
-                                                      repeats:NO]);
-  [[NSRunLoop currentRunLoop] addTimer:logoutTimer forMode:NSModalPanelRunLoopMode];
+ 
+  msg = message;
 
   if (NSRunAlertPanel(systemActionTitle ? systemActionTitle : NSLocalizedString(@"Logout", @""),
                       msg,
@@ -931,7 +907,6 @@
                       NSLocalizedString(@"Cancel", @""),
                       nil))
     {
-      [logoutTimer invalidate];
       if (pendingCommand) {
         // Set up for restart/shutdown
         _pendingSystemActionCommand = pendingCommand;
@@ -941,8 +916,6 @@
     }
   else
     {
-      [logoutTimer invalidate];
-      DESTROY(logoutTimer);
       loggingout = NO;
       if (pendingCommand) {
         _pendingSystemActionCommand = nil;
