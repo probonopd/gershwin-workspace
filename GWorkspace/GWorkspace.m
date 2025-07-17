@@ -66,6 +66,9 @@ static NSString *defaultxterm = @"xterm";
 
 static GWorkspace *gworkspace = nil;
 
+NSString *_pendingSystemActionCommand = nil;
+NSString *_pendingSystemActionTitle = nil;
+
 @interface	GWorkspace (PrivateMethods)
 - (void)_updateTrashContents;
 @end
@@ -163,18 +166,18 @@ static GWorkspace *gworkspace = nil;
   NSMenu *subMenu;
   NSMenu *windows, *services;  
   id<NSMenuItem> menuItem;
-    	
+    
   // Info
   menuItem = [mainMenu addItemWithTitle:_(@"Info") action:NULL keyEquivalent:@""];
   menu = AUTORELEASE ([NSMenu new]);
-  [mainMenu setSubmenu: menu forItem: menuItem];	
+  [mainMenu setSubmenu: menu forItem: menuItem];  
   [menu addItemWithTitle: _(@"About Workspace") action:@selector(showInfo:) keyEquivalent:@""];
   [menu addItemWithTitle: _(@"Preferences...") action:@selector(showPreferences:) keyEquivalent:@","];
-	 
+   
   // File
   menuItem = [mainMenu addItemWithTitle:_(@"File") action:NULL keyEquivalent:@""];
   menu = AUTORELEASE ([NSMenu new]);
-  [mainMenu setSubmenu: menu forItem: menuItem];		
+  [mainMenu setSubmenu: menu forItem: menuItem];    
   [menu addItemWithTitle:_(@"Open") action:@selector(openSelection:) keyEquivalent:@"o"];
   [menu addItemWithTitle:_(@"Open With...")  action:@selector(openWith:) keyEquivalent:@""];
   [menu addItemWithTitle:_(@"Open as Folder") action:@selector(openSelectionAsFolder:) keyEquivalent:@"O"];
@@ -188,7 +191,7 @@ static GWorkspace *gworkspace = nil;
   // Edit
   menuItem = [mainMenu addItemWithTitle:_(@"Edit") action:NULL keyEquivalent:@""];
   menu = AUTORELEASE ([NSMenu new]);
-  [mainMenu setSubmenu: menu forItem: menuItem];	
+  [mainMenu setSubmenu: menu forItem: menuItem];  
   [menu addItemWithTitle:_(@"Cut") action:@selector(cut:) keyEquivalent:@"x"];
   [menu addItemWithTitle:_(@"Copy") action:@selector(copy:) keyEquivalent:@"c"];
   [menu addItemWithTitle:_(@"Paste") action:@selector(paste:) keyEquivalent:@"v"];
@@ -304,15 +307,17 @@ static GWorkspace *gworkspace = nil;
 
   // Print
   [mainMenu addItemWithTitle:_(@"Print...") action:@selector(print:) keyEquivalent:@"p"];
-	
-  // Logout
+  
+  // Restart, Shut Down, Log Out
+  [mainMenu addItemWithTitle:_(@"Restart...") action:@selector(restart:) keyEquivalent:@""];
+  [mainMenu addItemWithTitle:_(@"Shut Down...") action:@selector(shutdown:) keyEquivalent:@""];
   [mainMenu addItemWithTitle:_(@"Logout") action:@selector(logout:) keyEquivalent:@""];
 
   [mainMenu update];
 
   [NSApp setServicesMenu: services];
   [NSApp setWindowsMenu: windows];
-  [NSApp setMainMenu: mainMenu];		
+  [NSApp setMainMenu: mainMenu];    
   
   RELEASE (mainMenu);
 }
@@ -572,6 +577,12 @@ static GWorkspace *gworkspace = nil;
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)app 
 {
+  // Only allow termination for logout actions
+  if (!loggingout) {
+    // Not a logout action, do not quit
+    return NSTerminateCancel;
+  }
+
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   
 #define TEST_CLOSE(o, w) if ((o) && ([w isVisible])) [w close]
@@ -583,19 +594,6 @@ static GWorkspace *gworkspace = nil;
                   nil, 
                   nil);  
     return NSTerminateCancel;  
-  }
-    
-  if ((dontWarnOnQuit == NO) && (loggingout == NO))
-    {
-      if (NSRunAlertPanel(NSLocalizedString(@"Quit!", @""),
-			  NSLocalizedString(@"Do you really want to quit?", @""),
-			  NSLocalizedString(@"Yes", @""),
-			  NSLocalizedString(@"No", @""),
-			  nil,
-			  nil) != NSAlertDefaultReturn)
-      {
-	return NSTerminateCancel;
-      }
   }
 
   if (logoutTimer && [logoutTimer isValid]) {
@@ -680,7 +678,8 @@ static GWorkspace *gworkspace = nil;
         }
   }
   		
-  return NSTerminateNow;
+  // This is a logout - allow termination
+  return NSTerminateNow; 
 }
 
 - (NSString *)defEditor
@@ -2017,8 +2016,8 @@ static GWorkspace *gworkspace = nil;
   id connection = [notif object];
 
   [[NSNotificationCenter defaultCenter] removeObserver: self
-	                    name: NSConnectionDidDieNotification
-	                  object: connection];
+						  name: NSConnectionDidDieNotification
+						object: connection];
 
   NSAssert(connection == [ddbd connectionForProxy],
 		                                  NSInternalInconsistencyException);
@@ -2139,7 +2138,7 @@ static GWorkspace *gworkspace = nil;
 		      NSLocalizedString(@"Yes", @""),
 		      NSLocalizedString(@"No", @""),
 		      nil))
-    {
+       {
       [self connectMDExtractor];
     }
 }
@@ -2148,7 +2147,7 @@ static GWorkspace *gworkspace = nil;
 	      from:(NSPoint)fromPoint
 		to:(NSPoint)toPoint
 {
-  [[NSWorkspace sharedWorkspace] slideImage: image from: fromPoint to: toPoint];
+     [[NSWorkspace sharedWorkspace] slideImage: image from: fromPoint to: toPoint];
 }
 
 
@@ -2808,6 +2807,108 @@ static GWorkspace *gworkspace = nil;
 - (BOOL)terminating
 {
   return terminating;
+}
+
+- (BOOL)trySystemAction:(NSString *)actionType 
+{
+  // These arrays can be expanded with more commands if needed for other systems
+  // or if the current commands fail. The order is important - we try the most
+  // common commands first, and if they fail, we try alternatives.
+  NSArray *commands;
+  if ([actionType isEqualToString:@"restart"]) {
+    commands = [NSArray arrayWithObjects:
+      [NSArray arrayWithObjects:@"/sbin/shutdown", @"-r", @"now", nil], nil
+    ];
+  } else if ([actionType isEqualToString:@"shutdown"]) {
+    commands = [NSArray arrayWithObjects:
+      [NSArray arrayWithObjects:@"/sbin/shutdown", @"-p", @"now", nil], nil
+    ];
+  } else {
+    return NO;
+  }
+    
+  for (NSArray *cmd in commands) {
+    NSLog(@"Attempting system action with command: %@", [cmd componentsJoinedByString:@" "]);
+    NSTask *task = [NSTask new];
+    AUTORELEASE(task);
+    [task setLaunchPath:[cmd objectAtIndex:0]];
+    if ([cmd count] > 1) {
+      [task setArguments:[cmd subarrayWithRange:NSMakeRange(1, [cmd count]-1)]];
+    }
+    
+    @try {
+      [task launch];
+      [task waitUntilExit];
+      
+      if ([task terminationStatus] == 0) {
+        NSLog(@"System action command launched successfully: %@", [cmd componentsJoinedByString:@" "]);
+        
+        // For restart/shutdown commands, if they succeed, the system should restart/shutdown
+        // and this application should never reach this point. If we reach here, it means
+        // the command succeeded but the system didn't restart/shutdown, which is an error.
+        
+        // Wait a bit to see if the system actually restarts/shuts down
+        NSLog(@"Waiting for system to %@...", actionType);
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:5.0]];
+        
+        // If we reach here, the system didn't restart/shutdown even though the command succeeded
+        // This is a failure case - the command succeeded but didn't work
+        NSLog(@"System action command succeeded but system did not %@", actionType);
+        // Continue to try next command
+      } else {
+        NSLog(@"System action failed with command: %@, exit status: %d", [cmd componentsJoinedByString:@" "], [task terminationStatus]);
+        // Try next command
+      }
+    } @catch (NSException *e) {
+      NSLog(@"System action failed with command: %@, error: %@", [cmd componentsJoinedByString:@" "], e);
+      // Try next command
+    }
+  }
+  
+  NSLog(@"All system action commands failed for action type: %@", actionType);
+  return NO; // All failed
+}
+
+- (void)executeSystemCommandAndReset
+{
+  if (_pendingSystemActionCommand) {
+    NSString *actionType = _pendingSystemActionCommand;
+    NSLog(@"Executing system command for action: %@", actionType);
+    
+    BOOL success = [self trySystemAction:_pendingSystemActionCommand];
+    
+    if (!success) {
+      NSRunAlertPanel(NSLocalizedString(@"error", @""),
+                      [NSString stringWithFormat:@"Failed to execute %@ command. No suitable command found.", _pendingSystemActionCommand],
+                      NSLocalizedString(@"OK", @""),
+                      nil,
+                      nil);
+    }
+    
+    // IMPORTANT: Reset state regardless of success/failure
+    // The application should NEVER quit itself during restart/shutdown
+    DESTROY(_pendingSystemActionCommand);
+    DESTROY(_pendingSystemActionTitle);
+    loggingout = NO;
+    
+    NSLog(@"System action attempt completed. Application state reset. App will NOT quit.");
+  }
+}
+
+- (void)restart:(id)sender
+{
+    [[GWorkspace gworkspace] startLogoutRestartShutdownWithType:@"restart"
+        message:NSLocalizedString(@"Are you sure you want to quit\nall applications and restart now?", @"")
+        systemAction:NSLocalizedString(@"Restart", @"")
+        pendingCommand:@"restart"];
+}
+
+- (void)shutdown:(id)sender
+{
+    [[GWorkspace gworkspace] startLogoutRestartShutdownWithType:@"shutdown"
+        message:NSLocalizedString(@"Are you sure you want to quit\nall applications and shut down now?", @"")
+        systemAction:NSLocalizedString(@"Shut Down", @"")
+        pendingCommand:@"shutdown"];
 }
 
 @end

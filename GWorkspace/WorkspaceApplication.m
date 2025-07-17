@@ -358,10 +358,6 @@
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
   autoLogoutDelay = [defaults integerForKey: @"GSAutoLogoutDelay"];
-  
-  if (autoLogoutDelay == 0) {
-    autoLogoutDelay = 120;
-  }
 
   maxLogoutDelay = [defaults integerForKey: @"GSMaxLogoutDelay"];
   
@@ -655,7 +651,7 @@
 
 - (void)applicationTerminated:(GWLaunchedApp *)app
 {
-  NSLog(@"WorkspaceApplication applicationTerminated: %@", app);
+  NSLog(@"WorkspaceApplication applicationTerminated: %@", [app name]);
   if (app == activeApplication) {
     activeApplication = nil;
   }
@@ -895,46 +891,48 @@
     }
 }
 
-- (void)startLogout
+- (void)startLogoutRestartShutdownWithType:(NSString *)type message:(NSString *)message systemAction:(NSString *)systemActionTitle pendingCommand:(NSString *)pendingCommand
 {
-  NSString *msg = [NSString stringWithFormat: @"%@\n%@%i %@",
-        NSLocalizedString(@"Are you sure you want to quit\nall applications and log out now?", @""),
-        NSLocalizedString(@"If you do nothing, the system will log out\nautomatically in ", @""),
-        autoLogoutDelay,
-        NSLocalizedString(@"seconds.", @"")];
-  
-  loggingout = YES;
-  logoutDelay = 30;
-  
-  if (logoutTimer && [logoutTimer isValid])
-    [logoutTimer invalidate];
+  NSString *msg;
 
-  ASSIGN (logoutTimer, [NSTimer scheduledTimerWithTimeInterval: autoLogoutDelay
-                                                        target: self 
-                                                      selector: @selector(doLogout:) 
-                                                      userInfo: nil 
-                                                       repeats: NO]);
-  /* we will display a modal panel, so we add the timer to the modal runloop */
-  [[NSRunLoop currentRunLoop] addTimer: logoutTimer forMode: NSModalPanelRunLoopMode];
-                                        
-  if (NSRunAlertPanel(NSLocalizedString(@"Logout", @""),
+  // Only set loggingout = YES for actual logout, not for restart/shutdown
+  loggingout = (pendingCommand == nil);
+  logoutDelay = 30;
+ 
+  msg = message;
+
+  if (NSRunAlertPanel(systemActionTitle ? systemActionTitle : NSLocalizedString(@"Logout", @""),
                       msg,
-                      NSLocalizedString(@"Log out", @""),
+                      systemActionTitle ? systemActionTitle : NSLocalizedString(@"Log out", @""),
                       NSLocalizedString(@"Cancel", @""),
                       nil))
     {
-      [logoutTimer invalidate]; 
-      [self doLogout: nil];
+      if (pendingCommand) {
+        // Set up for restart/shutdown
+        _pendingSystemActionCommand = pendingCommand;
+        _pendingSystemActionTitle = systemActionTitle;
+      }
+      [self doLogoutRestartShutdown:nil];
     }
   else
     {
-      [logoutTimer invalidate]; 
-      DESTROY (logoutTimer);
       loggingout = NO;
+      if (pendingCommand) {
+        _pendingSystemActionCommand = nil;
+        _pendingSystemActionTitle = nil;
+      }
     }
 }
 
-- (void)doLogout:(id)sender
+- (void)startLogout
+{
+  [self startLogoutRestartShutdownWithType:@"logout"
+                                   message:NSLocalizedString(@"Are you sure you want to quit\nall applications and log out now?", @"")
+                              systemAction:nil
+                             pendingCommand:nil];
+}
+
+- (void)doLogoutRestartShutdown:(id)sender
 {
   NSMutableArray *launched = [NSMutableArray array];
   GWLaunchedApp *gwapp = [self launchedAppWithPath: gwBundlePath andName: gwProcessName];
@@ -954,17 +952,24 @@
     {
       ASSIGN (logoutTimer, [NSTimer scheduledTimerWithTimeInterval: logoutDelay
                                                             target: self 
-                                                          selector: @selector(terminateTasks:) 
+                                                          selector: @selector(terminateTasksForLogoutRestartShutdown:) 
                                                           userInfo: nil 
                                                            repeats: NO]);
     }
   else
     {
-      [NSApp terminate: self];
+      // For logout, terminate the app. For restart/shutdown, execute system command directly.
+      if (_pendingSystemActionCommand) {
+        // This is restart/shutdown - try system commands and reset state
+        [self executeSystemCommandAndReset];
+      } else {
+        // This is logout - terminate the app
+        [NSApp terminate: self];
+      }
     }
 }
 
-- (void)terminateTasks:(id)sender
+- (void)terminateTasksForLogoutRestartShutdown:(id)sender
 {
   BOOL canterminate = YES;
 
@@ -997,10 +1002,10 @@
                       appNames, 
                       NSLocalizedString(@"refuse to terminate.", @"")];    
 
-      if (NSRunAlertPanel(NSLocalizedString(@"Logout", @""),
+      if (NSRunAlertPanel(_pendingSystemActionTitle ? _pendingSystemActionTitle : NSLocalizedString(@"Logout", @""),
                           msg,
                           NSLocalizedString(@"Kill applications", @""),
-                          NSLocalizedString(@"Cancel logout", @""),
+                          NSLocalizedString(@"Cancel", @""),
                           nil))
         {
           for (i = 0; i < [launched count]; i++)
@@ -1016,10 +1021,26 @@
     }
   
   if (canterminate)
-    [NSApp terminate: self];
+    {
+      // For logout, terminate the app. For restart/shutdown, execute system command directly.
+      if (_pendingSystemActionCommand) {
+        // This is restart/shutdown - try system commands and reset state
+        [self executeSystemCommandAndReset];
+      } else {
+        // This is logout - terminate the app
+        [NSApp terminate: self];
+      }
+    }
   else
-    loggingout = NO;
+    {
+      // Cannot terminate other apps - reset state
+      loggingout = NO;
+      DESTROY(_pendingSystemActionCommand);
+      DESTROY(_pendingSystemActionTitle);
+    }
 }
+
+
 
 @end
 

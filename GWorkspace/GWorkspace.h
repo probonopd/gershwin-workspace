@@ -354,6 +354,14 @@
 
 - (void)logout:(id)sender;
 
+- (void)restart:(id)sender;
+
+- (void)shutdown:(id)sender;
+
+- (BOOL)trySystemAction:(NSString *)actionType;
+
+- (void)executeSystemCommandAndReset;
+
 - (void)showInfo:(id)sender;
 
 - (void)showPreferences:(id)sender;
@@ -403,6 +411,9 @@
 - (void)checkRemovableMedia:(id)sender;
 
 - (void)emptyRecycler:(id)sender;
+
+- (void)restart:(id)sender;
+- (void)shutdown:(id)sender;
 
 
 //
@@ -520,9 +531,11 @@
 
 - (void)startLogout;
 
-- (void)doLogout:(id)sender;
+- (void)startLogoutRestartShutdownWithType:(NSString *)type message:(NSString *)message systemAction:(NSString *)systemActionTitle pendingCommand:(NSString *)pendingCommand;
 
-- (void)terminateTasks:(id)sender;
+- (void)doLogoutRestartShutdown:(id)sender;
+
+- (void)terminateTasksForLogoutRestartShutdown:(id)sender;
 
 @end
 
@@ -607,5 +620,8 @@
 - (id)_workspaceApplication;
 
 @end
+
+extern NSString *_pendingSystemActionCommand;
+extern NSString *_pendingSystemActionTitle;
 
 #endif // GWORKSPACE_H
