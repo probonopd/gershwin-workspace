@@ -2,6 +2,11 @@ name: Build GWorkspace with GNUstep and Clang
 
 on: [push, pull_request]
 
+env:
+  CC: clang
+  CXX: clang++
+  OBJC: clang
+
 jobs:
   build-gworkspace:
     runs-on: ubuntu-22.04
@@ -29,24 +34,18 @@ jobs:
 
     - name: Configure and build GWorkspace
       run: |
-        export CC=clang
-        export CXX=clang++
-        export OBJC=clang
         . /usr/share/GNUstep/Makefiles/GNUstep.sh
-        ./configure --with-inotify CC=clang CXX=clang++
-        gmake
-        sudo gmake install
+        ./configure --with-inotify
+        make
+        sudo make install
 
     - name: Build and install GWMetadata
       run: |
-        export CC=clang
-        export CXX=clang++
-        export OBJC=clang
         . /usr/share/GNUstep/Makefiles/GNUstep.sh
         cd GWMetadata
-        ./configure CC=clang CXX=clang++
-        gmake
-        sudo gmake install
+        ./configure
+        make
+        sudo make install
 
     - name: Zip GWorkspace.app
       run: |
