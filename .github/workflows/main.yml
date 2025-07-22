@@ -32,6 +32,17 @@ jobs:
     - name: Checkout GWorkspace repository
       uses: actions/checkout@v4
 
+    - name: Configure and build gnustep-make
+      run: |
+        # Need to build gnustep-make, otherwise we get a mismatch error
+        sudo apt-get build-dep gnustep-make
+        git clone https://github.com/gnustep/tools-make.git
+        cd tools-make
+        export CC=clang
+        ./configure
+        make
+        sudo make install
+        
     - name: Configure and build GWorkspace
       run: |
         . /usr/share/GNUstep/Makefiles/GNUstep.sh
