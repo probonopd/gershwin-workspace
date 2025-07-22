@@ -29,6 +29,9 @@ jobs:
 
     - name: Configure and build GWorkspace
       run: |
+        export CC=clang
+        export CXX=clang++
+        export OBJC=clang
         . /usr/share/GNUstep/Makefiles/GNUstep.sh
         ./configure --with-inotify CC=clang CXX=clang++
         gmake
@@ -36,6 +39,9 @@ jobs:
 
     - name: Build and install GWMetadata
       run: |
+        export CC=clang
+        export CXX=clang++
+        export OBJC=clang
         . /usr/share/GNUstep/Makefiles/GNUstep.sh
         cd GWMetadata
         ./configure CC=clang CXX=clang++
