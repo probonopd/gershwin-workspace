@@ -33,12 +33,6 @@ jobs:
     - name: Checkout GWorkspace repository
       uses: actions/checkout@v4
 
-    - name: Set GNUstep environment and compiler
-      run: |
-        echo "CC=clang" >> $GITHUB_ENV
-        echo "CXX=clang++" >> $GITHUB_ENV
-        echo ". /usr/lib/GNUstep/System/Library/Makefiles/GNUstep.sh" >> $GITHUB_ENV
-
     - name: Configure and build GWorkspace
       run: |
         . /usr/lib/GNUstep/System/Library/Makefiles/GNUstep.sh
@@ -53,7 +47,6 @@ jobs:
         ./configure CC=clang CXX=clang++
         gmake
         sudo gmake install
-
 
     - name: Zip GWorkspace.app
       run: |
