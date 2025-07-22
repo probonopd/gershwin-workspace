@@ -43,7 +43,7 @@ env:
     libicns-dev
     libobjc-10-dev
     gobjc
-    gcc
+    clang
     libxt-dev
     libfreetype-dev
     libcairo2-dev
@@ -60,10 +60,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Ubuntu x64 GCC
+          - name: Ubuntu x64 clang
             library-combo: gnu-gnu-gnu
-            CC: gcc
-            CXX: g++
+            CC: clang
+            CXX: clang++
 
     env:
       SRC_PATH: ${{ github.workspace }}/source
