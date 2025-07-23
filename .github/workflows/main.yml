@@ -24,7 +24,7 @@ jobs:
           libffi-dev \
           libxml2-dev \
           libtiff-dev \
-          libobjc-dev \
+          libobjc-11-dev \
           libpng-dev \
           libjpeg-dev \
           zlib1g-dev \
