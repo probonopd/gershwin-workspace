@@ -454,6 +454,21 @@
   return viewType;
 }
 
+- (void)setViewType:(GWViewType)vtype
+{
+  if (viewType != vtype) {
+    viewType = vtype;
+    // Notify the node view to change its display type
+    if ([nodeView respondsToSelector: @selector(setViewType:)]) {
+      [nodeView setViewType: vtype];
+    }
+    // Refresh the view display
+    if (nodeView && [nodeView respondsToSelector: @selector(setNeedsDisplay:)]) {
+      [nodeView setNeedsDisplay: YES];
+    }
+  }
+}
+
 - (BOOL)isFirstRootViewer
 {
   return firstRootViewer;
@@ -462,6 +477,16 @@
 - (NSString *)defaultsKey
 {
   return defaultsKeyStr;
+}
+
+- (BOOL)isSpatial
+{
+  return NO;
+}
+
+- (int)vtype
+{
+  return BROWSING;
 }
 
 - (void)activate
@@ -1209,6 +1234,11 @@ constrainMinCoordinate:(CGFloat)proposedMin
 - (void)goForwardInHistory
 {
   [manager goForwardInHistoryOfViewer: self];
+}
+
+- (void)setViewerBehaviour:(id)sender
+{
+  [manager setBehaviour: [sender title] forViewer: self];
 }
 
 - (void)setViewerType:(id)sender

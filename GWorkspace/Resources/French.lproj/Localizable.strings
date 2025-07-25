@@ -33,6 +33,9 @@
 	"Browser" = "Navigateur";
 	"Icon" = "Icône";
 	"List" = "Liste";
+	"Viewer behaviour" = "Comportement";
+		"Browsing" = "Browsing";
+		"Spatial" = "Spatial";
 	"Show" = "Afficher";
 	        "Name only" = "Nom seulement";
 		"Type" = "Type";

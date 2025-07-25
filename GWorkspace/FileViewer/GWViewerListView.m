@@ -1,6 +1,6 @@
 /* GWViewerListView.m
  *  
- * Copyright (C) 2004-2013 Free Software Foundation, Inc.
+ * Copyright (C) 2004-2012 Free Software Foundation, Inc.
  *
  * Author: Enrico Sersale <enrico@imago.ro>
  * Date: December 2004
@@ -24,6 +24,7 @@
 
 #import <AppKit/AppKit.h>
 #import "GWViewerListView.h"
+#import "GWSpatialViewer.h"
 #import "GWViewer.h"
 #import "GWViewersManager.h"
 #import "GWorkspace.h"
@@ -48,31 +49,33 @@
 
 - (FSNode *)infoNode
 {
-  if (viewer)
-    {
-      return [viewer baseNode];
-    }
+  if (viewer && ([viewer isSpatial] == NO)) {
+    return [viewer baseNode];
+  }
   
   return node;
 }
 
 - (BOOL)keepsColumnsInfo
 {
-  return (viewer != nil);
+  return (viewer && ([viewer isSpatial] == NO));
 }
 
 - (void)selectionDidChange
 {
   NSArray *selection = [self selectedNodes];
 
-  if ([selection count] == 0)
+  if ([selection count] == 0) {
     selection = [NSArray arrayWithObject: node];
+  } else if (([viewer vtype] == SPATIAL) 
+                      && [(NSWindow *)[viewer win] isKeyWindow]) {
+    [manager selectedSpatialViewerChanged: viewer];
+  }
 
-  if ((lastSelection == nil) || ([selection isEqual: lastSelection] == NO))
-    {
-      ASSIGN (lastSelection, selection);
-      [viewer selectionChanged: selection];
-    }
+  if ((lastSelection == nil) || ([selection isEqual: lastSelection] == NO)) {
+    ASSIGN (lastSelection, selection);
+    [viewer selectionChanged: selection];
+  }
 }
 
 - (void)openSelectionInNewViewer:(BOOL)newv
@@ -100,6 +103,16 @@
   }
   
   return self;
+}
+
+- (void)mouseUp:(NSEvent *)theEvent
+{
+  [super mouseUp: theEvent];
+
+  if ([viewer vtype] == SPATIAL) {
+    [manager selectedSpatialViewerChanged: viewer];
+    [manager synchronizeSelectionInParentOfViewer: viewer];
+  }
 }
 
 - (NSMenu *)menuForEvent:(NSEvent *)theEvent

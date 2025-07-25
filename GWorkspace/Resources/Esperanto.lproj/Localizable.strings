@@ -34,6 +34,9 @@
 	"Browser" = "Krozilo";
 	"Icon" = "Piktogramoj";
 	"List" = "Listo";
+	"Viewer behaviour" = "Montrila agmaniero";
+		"Browsing" = "Krozante";
+		"Spatial" = "Space";
 	"Show" = "Montru";
 		"Name only" = "Nur nomon";
 		"Type" = "Tipo";

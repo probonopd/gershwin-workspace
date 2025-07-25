@@ -1,6 +1,6 @@
 /* GWViewer.h
  *  
- * Copyright (C) 2004-2013 Free Software Foundation, Inc.
+ * Copyright (C) 2004-2012 Free Software Foundation, Inc.
  *
  * Author: Enrico Sersale <enrico@imago.ro>
  * Date: July 2004
@@ -30,7 +30,8 @@ typedef enum
   {
     GWViewTypeBrowser = 1,
     GWViewTypeIcon,
-    GWViewTypeList
+    GWViewTypeList,
+    GWViewTypeSpatial
   } GWViewType;
 
 @class GWViewersManager;
@@ -105,12 +106,16 @@ typedef enum
 - (id)nodeView;
 - (id)shelf;
 - (GWViewType)viewType;
+- (void)setViewType:(GWViewType)vtype;
 
 /* the first among root viewers, the default Viewer */
 - (BOOL)isFirstRootViewer;
 
 /* returns the key used in the defaults (prefsname) */
 - (NSString *)defaultsKey;
+
+- (BOOL)isSpatial;
+- (int)vtype;
 
 - (void)activate;
 - (void)deactivate;
@@ -167,6 +172,7 @@ typedef enum
 - (void)deleteFiles;
 - (void)goBackwardInHistory;
 - (void)goForwardInHistory;
+- (void)setViewerBehaviour:(id)sender;
 - (void)setViewerType:(id)sender;
 - (void)setShownType:(id)sender;
 - (void)setExtendedShownType:(id)sender;

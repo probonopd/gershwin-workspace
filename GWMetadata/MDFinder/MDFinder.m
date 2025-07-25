@@ -72,20 +72,22 @@ static MDFinder *mdfinder = nil;
   NSMenu *windows, *services;  
   id<NSMenuItem> menuItem;
 
-  // Info 	
+  // Info 
   menuItem = addItemToMenu(mainMenu, @"Info", @"", nil, @"");
   menu = AUTORELEASE ([NSMenu new]);
-  [mainMenu setSubmenu: menu forItem: menuItem];	
+  [mainMenu setSubmenu: menu forItem: menuItem];
   addItemToMenu(menu, @"Activate context help", @"", @"activateContextHelp:", @";");
+  [menu addItem:[NSMenuItem separatorItem]];
 
   // File
   menuItem = addItemToMenu(mainMenu, @"File", @"", nil, @"");
   menu = AUTORELEASE ([NSMenu new]);
-  [mainMenu setSubmenu: menu forItem: menuItem];		
+  [mainMenu setSubmenu: menu forItem: menuItem];
   addItemToMenu(menu, @"New", @"", @"newQuery:", @"n");
   addItemToMenu(menu, @"Open...", @"", @"openQuery:", @"o");
   addItemToMenu(menu, @"Save", @"", @"saveQuery:", @"s");
   addItemToMenu(menu, @"Save as...", @"", @"saveQueryAs:", @"");
+  [menu addItem:[NSMenuItem separatorItem]];
 
   // Edit
   menuItem = addItemToMenu(mainMenu, @"Edit", @"", nil, @"");

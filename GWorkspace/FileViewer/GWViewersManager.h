@@ -27,6 +27,9 @@
 #import "FSNodeRep.h"
 #import "GWViewer.h"
 
+#define BROWSING 0
+#define SPATIAL  1
+
 @class GWorkspace;
 @class History;
 
@@ -36,9 +39,12 @@
   BOOL orderingViewers;
   GWorkspace *gworkspace;
   History *historyWindow;
+  NSMutableArray *spatialViewersHistory;
+  int spvHistoryPos;  
   BOOL settingHistoryPath;
   NSHelpManager *helpManager;
   NSAttributedString *bviewerHelp;
+  NSAttributedString *sviewerHelp;
   NSNotificationCenter *nc;  
 }
 
@@ -59,18 +65,52 @@
           forceNew:(BOOL)force
 	   withKey:(NSString *)key;
            
+- (id)viewerOfType:(unsigned)vtype
+          showType:(NSString *)stype
+           forNode:(FSNode *)node
+     showSelection:(BOOL)showsel
+    closeOldViewer:(id)oldvwr
+          forceNew:(BOOL)force;
+       
 - (NSArray *)viewersForBaseNode:(FSNode *)node;
 
 - (id)viewerWithBaseNode:(FSNode *)node; 
 
-- (id)viewerShowingNode:(FSNode *)node; 
+- (id)viewerOfType:(unsigned)type
+      withBaseNode:(FSNode *)node; 
+
+- (id)viewerOfType:(unsigned)type
+       showingNode:(FSNode *)node; 
 
 - (id)rootViewer;
+
+- (NSNumber *)nextRootViewerKey;
+
+- (void)setBehaviour:(NSString *)behaviour forViewer:(id)viewer;
+
+- (id)spatialViewerForNode:(FSNode *)node 
+             showSelection:(BOOL)showsel 
+            closeOldViewer:(id)oldvwr 
+                  forceNew:(BOOL)force;
+
+- (id)rootViewerForNode:(FSNode *)node;
+
+- (int)typeOfViewerForNode:(FSNode *)node;
+
+- (id)parentOfSpatialViewer:(id)aviewer;
 
 
 - (void)viewerWillClose:(id)aviewer;
 
 - (void)closeInvalidViewers:(NSArray *)vwrs;
+
+
+- (void)selectedSpatialViewerChanged:(id)aviewer;
+
+- (void)synchronizeSelectionInParentOfViewer:(id)aviewer;
+
+- (void)viewer:(id)aviewer didShowNode:(FSNode *)node;
+
 
 - (void)selectionChanged:(NSArray *)selection;
 

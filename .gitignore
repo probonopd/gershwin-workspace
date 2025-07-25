@@ -11,6 +11,7 @@ TAGS
 tags
 ID
 .DS_Store*
+*.core
 
 # Vim swap files.
 .*.sw[a-z]
@@ -35,3 +36,4 @@ derived_src
 *.finder
 *.framework
 *.extinfo
+Chrome.core

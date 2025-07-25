@@ -120,6 +120,8 @@ typedef enum {
 
 - (void)deselectAllIcons;
 
+- (void)deselectInSpatialViewers;
+
 - (void)addWatcherForPath:(NSString *)path;
 
 - (void)removeWatcherForPath:(NSString *)path;
